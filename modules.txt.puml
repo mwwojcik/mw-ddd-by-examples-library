@@ -1,0 +1,11 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+
+Person(employee,"Employee")
+Person(customer,"Customer")
+
+Component(catalogue,"Catalogue","DVD Catalogue","Component managed dvd films cagalogue")
+ContainerDb(database, "NoSQL Database", "NoSQL Database", "Stores movies,rentals etc.")
+
+@enduml
