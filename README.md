@@ -13,4 +13,8 @@ a longer period (x2) and at a special price (30%). The promotional offer is avai
 4. Reservation can be reject if the user has any video with a refund date exceeded. 
 5. Customer can post a review to movie. This is awarded with bonus points. When user reaches 100 points, he gets VIP status.
 6. The rental price depends on type of the filme, and the number of bonus points owned by the user.
-7. Customer 
+7. Customer can view the status of their reservations and rentals through the Customer Panel.
+8. The rental employee has access to the Employee Panel with all reservations with expired dates 
+and rentals with exceeded refund dates.
+9. Employee may send reminder information (via email)
+10. System can calculate penalty interests for defaulting customers. 
