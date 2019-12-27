@@ -1,56 +1,42 @@
 @startuml
 !includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
 
-LAYOUT_LEFT_RIGHT
+LAYOUT_TOP_DOWN
 
-Person(employee,"Employee")
-Person(customer,"Customer")
+
+Person(person,"Customer/Employee")
 
 System_Boundary(c1, "Modular monolith boundary") {
 
-Component(movies,"Movies catalogue","Facade/REST","Module responsible for managing the movie catalog")
+Component(movies,"Movies","Facade/REST","Module responsible for managing the movie catalog")
 Component(special,"Special offer","Facade/REST","Module responsible for managing the special offer")
-Component(review,"Review","Facade/REST","Module responsible for managing user comments and reviews")
+Component(review,"Reviews","Facade/REST","Module responsible for managing user comments and reviews")
 Component(reservations,"Reservations","Facade/REST","Module responsible for managing reservations")
 Component(rentals,"Rentals","Facade/REST","Module responsible for managing rental list ")
-Component(points,"Bonus points","Facade/REST","")
+Component(points,"Points","Facade/REST","Module responsible for maanaging bonus points")
 
 ContainerDb(database, "NoSQL Database", "NoSQL Database", "Stores movies,rentals etc.")
 
+Rel(person,movies,"show/create/remove movies")
 
-Rel(employee,movies,"list films")
-Rel(employee,movies,"add film")
-Rel(employee,movies,"remove film")
-Rel(employee,movies,"film details")
 
-Rel(movies,special,"mark as special")
-Rel(movies,special,"remove special mark")
-
-Rel(customer,review,"show")
+Rel(movies,special,"mark/unmark as special")
+Rel(person,reservations,"show/create/remove customer reservations, expired reservations")
+Rel(person,rentals,"show/create/remove customer rentals, check out movie, calculate price,calculate penalty, not returned on time")
+Rel(person,review,"show/create review")
 Rel(review,points,"add points for review")
-Rel(customer,reservations,"my reservations")
-Rel(customer,reservations,"reserve movie")
-Rel(customer,reservations,"remove reservation")
-
-Rel(customer,rentals,"list rentals")
-Rel(customer,rentals,"check out movie")
 Rel(rentals,database,"reads/writes rentals")
-
-Rel(customer,rentals,"calculate price")
 Rel(rentals,points,"calculate points")
-Rel(customer,points,"show")
-Rel(customer,rentals,"calculate penalty")
+Rel(person,points,"show")
 Rel(reservations,database,"reads/writes reservations")
-Rel(employee,reservations,"show all expired reservations")
-Rel(employee,rentals,"show  not returned on time")
-
-
 Rel(movies,database,"reads data from movie catalogue db")
+Rel(special,database,"reads/writes special")
+
 }
 Component(payments,"Payments","Facade/REST","Module responsible for payments realisation.")
 Rel(rentals,payments,"<<SIGNAL>>send payment")
 
-Component(information,"User information","Facade/REST","Module responsible for end to end comunication (via email)")
+Component(information,"Email module","Facade/REST","Module responsible for end to end comunication (via email)")
 Rel(rentals,information,"<<Signal>> send remind message")
 
 @enduml
