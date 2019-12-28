@@ -1,0 +1,40 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_LEFT_RIGHT
+
+
+Person(patron,"Patron/reseracher")
+Person(librarian,"Librarian")
+ContainerDb(database, "NoSQL Database", "NoSQL Database", "Stores movies,rentals etc.")
+
+System_Boundary(c0, "Monolith") {
+
+System_Boundary(c1, "Catalogue boundary") {
+Component(catalogue,"Library catalogue","REST")
+Rel(librarian,catalogue,"add books, books instances to")
+}
+System_Boundary(c2, "Lending boundary") {
+Component(patron_profile,"Patron profile","REST")
+Rel(patron,patron_profile,"desc")
+
+Component(daily_sheet,"Daily sheet","REST")
+Component(patronmod,"Patron","REST")
+Component(book,"Book","REST")
+
+Rel(patron_profile,daily_sheet,"reads from")
+Rel(patron_profile,patronmod,"send commands to")
+Rel(patronmod,database,"reads/writes to patron_books")
+Rel(book,database,"reads/writes to book_databse")
+
+Rel(daily_sheet,database,"reads/writes to holds_sheet, checkout_sheet")
+
+Rel(book,catalogue,"listen to signals from")
+Rel(book,patronmod,"listen to signals from")
+Rel(patronmod,book,"uses")
+Rel(daily_sheet,patronmod,"listen to signals from")
+Rel(patronmod,daily_sheet,"uses")
+
+Rel(catalogue,database,"reads/writes to catalogue, catalogue_books, catalogue_books_instances")
+}
+@enduml

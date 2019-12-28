@@ -1,76 +1,27 @@
 ## Overviewin hexagonal architecture
-This repo is an example of hexagonal multimodule architecture .
-I try to use techniques connected with DDD, and Event Driven Architecture.
+This implementation based on a domain analysis carried out 
+as part of the project https://github.com/ddd-by-examples/library .   
 
-## Domain
-We want to create DVD rental manegement system.
-It should realize  the following functionalities:
+## [Domain Description](https://github.com/ddd-by-examples/library#domain-description) 
 
-1. DVD catalogue managing (employee should (add/remove/delete) movies from the catalogue).
-2. Some of them can be marked as "special offer". Promoted  movies are rented for 
-a longer period (x2) and at a special price (30%). The promotional offer is available only to VIP customers.
-3. Every customer  can make a reservation two movies for 2 days (VIP for 5 days), after this time, reservations expired.
-4. Reservation can be reject if the user has any video with a refund date exceeded. 
-5. The rental price depends on type of the movie, and the number of bonus points owned by the user costs: regular movie(20), new movie (30), old movie (10)
-6. Customer can post a review to movie. This is awarded with bonus points (5 points per review). 
-7. Each rental results in a bonus point
-8. When user reaches 100 points, he gets VIP status.
-9. Customer can view status of their reservations and rentals
-10. Employee may see all not returned movies (date of return is less than now )
-11. Employee may send reminder information (via email)
-12. System can calculate penalty interests for defaulting customers. 
+###General assumptions (interpretation)
 
-## Acceptance integration test
-  ``` java
- @DisplayName("Positive test acceptance - rental dvd movie")
-    @Test
-    void positiveRental()
-            throws Exception {
-        // given inventory with three films added
-        // "Clerks" (type=old), "Frozen" (type="regular"), "Toy Story 4" (type=new)
+1. Two main roles: Patron and Researcher Patron.
+2. Access to some books may be restricted (available only for researcher patrons) 
+3. Available book can be placed on hold (reserved) only by one patron at any given point in time.
+4. Regular patron is limited to five holds at any moment, researcher patron hasn't any limits.
+5. There are two main types of book holding:
++ open-ended - is active until the patron checks out the book
++ close-ended - can be expired (if it's not completed within a fixed number of days)
+6. There is a daily sheet with expiring holds (checks at the beginning day).
+7. Resercher patron can request an open-ended hold duration.
+8. Any patron with more than two overdue checkouts at library branch will get a hold rejection (in this branch).
+9. Any book can be checked out for up to 60 days.
+10. There is a daily sheet with overdue checkouts.
+11. There is a patron profile. It is used to interact with current holds and checkouts. This is a form of daily sheet
+with limitation to actual patron data, and without a daily dimension.
+12. Patron can see current holds (not canceled nor expired), and current checkouts (including overdue).
+13. Patron can hold a book, and cancel holds. 
 
-        // when 'I go /films'
-        // then 'I can see all 3 films'
-
-        // when 'I go /points'
-        // then 'I can see no points'
-
-        //when 'I post /price with all movies for standard period 2 days'
-        //then 'I can see: Clerks (price=10),Frozen(price=20), Toy Story 4 (price=30), Total=60 '
-
-        //when 'I go /reservation'
-        //then 'I can see empty list'
-
-        //when 'I post /reservation with all movies for standard period 2 days'
-        //then 'I have reserved all movies'
-
-        //when 'I go /reservation'
-        //then 'I can see three position list'
-
-        //when 'I go /rental'
-        //then 'I can see empty list'
-
-        //when 'I post /rental with three films for standard 2 days'
-        //then 'I rent three films'
-
-        //when 'I go /rental'
-        //then 'I can see three position list'
-
-        //when 'I go /points'
-        //then 'I can see 3 points'
-
-        //when 'I go /review'
-        //then 'I can see empty list'
-
-        //when 'I post /review with my comment for Clerks'
-        //then 'My review was added'
-
-        //when 'I go /review'
-        //then 'I can see list with one position'
-
-        //when 'I go /points'
-        //then 'I can see 8 points'
-    }
-  ```
 ## Modules
 ![C4 Diagram Modules](doc/modules.png)
