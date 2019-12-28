@@ -1,40 +1,47 @@
 @startuml
 !includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
 
+title Component diagram for Internet Banking System - API Application
+
+LAYOUT_WITH_LEGEND()
 LAYOUT_TOP_DOWN
 
 
-Person(patron,"Patron/reseracher")
+Person(user,"Patron/reseracher")
 Person(librarian,"Librarian")
+
+System_Boundary(c0, "Catalogue context") {
+Component(catalogue,"Library catalogue","REST")
+}
+
+System_Boundary(c1, "Lending context") {
+Component(book,"Book","REST")
+Component(patron_profile,"Patron profile","REST")
+Component(daily_sheet,"Daily sheet","REST")
+Component(patron,"Patron","REST")
+}
+
 ContainerDb(database, "NoSQL Database", "NoSQL Database", "Stores movies,rentals etc.")
 
-System_Boundary(c0, "Monolith") {
-
-System_Boundary(c1, "Catalogue boundary") {
-Component(catalogue,"Library catalogue","REST")
 Rel(librarian,catalogue,"add books, books instances to")
-}
-System_Boundary(c2, "Lending boundary") {
-Component(patron_profile,"Patron profile","REST")
-Rel(patron,patron_profile,"desc")
-
-Component(daily_sheet,"Daily sheet","REST")
-Component(patronmod,"Patron","REST")
-Component(book,"Book","REST")
+Rel(user,patron_profile,"manage holds, books")
 
 Rel(patron_profile,daily_sheet,"reads from")
-Rel(patron_profile,patronmod,"send commands to")
-Rel(patronmod,database,"reads/writes to patron_books")
+Rel(patron_profile,patron,"send commands to")
+
+Rel(patron,daily_sheet,"uses")
+Rel(book,catalogue,"listen to signals from")
+
+Rel(patron,database,"reads/writes to patron_books")
 Rel(book,database,"reads/writes to book_databse")
 
 Rel(daily_sheet,database,"reads/writes to holds_sheet, checkout_sheet")
 
-Rel(book,catalogue,"listen to signals from")
-Rel(book,patronmod,"listen to signals from")
-Rel(patronmod,book,"uses")
-Rel(daily_sheet,patronmod,"listen to signals from")
-Rel(patronmod,daily_sheet,"uses")
+Rel(book,patron,"listen to signals from")
+Rel(patron,book,"uses")
+Rel(daily_sheet,patron,"listen to signals from")
+
 
 Rel(catalogue,database,"reads/writes to catalogue, catalogue_books, catalogue_books_instances")
-}
+
 @enduml
