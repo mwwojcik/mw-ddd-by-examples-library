@@ -15,16 +15,16 @@ class CatalogueDatabase implements CatalogueRepository {
 
     @Override
     public Book saveNew(Book book) {
-        return null;
+        return bookRepository.save(book);
     }
 
     @Override
     public BookInstance saveNew(BookInstance bookInstance) {
-        return null;
+        return bookInstanceRepository.save(bookInstance);
     }
 
     @Override
     public Optional<Book> findBy(ISBN isbn) {
-        return Optional.empty();
+        return bookRepository.findById(isbn);
     }
 }

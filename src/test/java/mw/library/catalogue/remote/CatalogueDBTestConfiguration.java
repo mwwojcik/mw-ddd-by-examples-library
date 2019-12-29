@@ -2,7 +2,9 @@ package mw.library.catalogue.remote;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import mw.library.catalogue.CatalogueFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.mongo.MongoRepositoriesAutoConfiguration;
@@ -21,7 +23,7 @@ public class CatalogueDBTestConfiguration {
     public @Bean
     //MongoAutoConfiguration
     MongoClient mongoClient() {
-        return MongoClients.create("mongodb://10.22.33.78:27027");
+        return MongoClients.create("mongodb://localhost:28017");
     }
 
     public @Bean
@@ -35,4 +37,5 @@ public class CatalogueDBTestConfiguration {
     public MongoTemplate mongoTemplate(MongoDbFactory factory) throws Exception {
         return new MongoTemplate(factory);
     }
+
 }

@@ -1,13 +1,10 @@
 package mw.library.catalogue;
 
-import mw.library.LibraryManagementApp;
-import mw.library.catalogue.infrastructure.CatalogueDBConfiguration;
 import mw.library.catalogue.standalone.LibraryManagementStandaloneApp;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
 
 
 @SpringBootTest(classes = LibraryManagementStandaloneApp.class)
@@ -16,54 +13,48 @@ class CatalogueAcceptanceStandaloneIT {
     @Autowired
     private CatalogueFacade facade;
 
-    @DisplayName("Positive test acceptance - rental dvd movie")
+    @DisplayName("Positive test acceptance - add book to catalogue")
     @Test
     void acceptanceTestInStandaloneDB()
             throws Exception {
-        System.out.println("test");
-        // given inventory with three films added
-        // "Clerks" (type=old), "Frozen" (type="regular"), "Toy Story 4" (type=new)
+        // given inventory with two books added
+        // "Domain-Driven Design" - Eric Evans, "Implementing Domain Driven Desing" - Vaughn Vernon
+        var evans = facade.saveNew(new Book(BooksFixture.DDD_ISBN_STR, "Eric Evans", "Domain-Driven Design"));
+        var vernon = facade.saveNew(new Book(BooksFixture.DDD_ISBN_STR_01, "Vaughn Vernon", "Implementing Domain Driven Desing"));
+        //each book has one restricted instance
+        facade.saveNew(BookInstance.of(evans, BookType.Typical));
+        facade.saveNew(BookInstance.of(vernon, BookType.Typical));
 
-        // when 'I go /films'
-        // then 'I can see all 3 films'
+        // when -> I go api/books
+        // then -> I can see 2 films'
 
-        // when 'I go /points'
-        // then 'I can see no points'
+        //when -> I post api/books wit data:"Analysis Patterns"-Martin Fowler'
+        //then -> I can see added book data
 
-        //when 'I post /price with all movies for standard period 2 days'
-        //then 'I can see: Clerks (price=10),Frozen(price=20), Toy Story 4 (price=30), Total=60 '
+        // when -> I go api/books
+        // then -> I can see 3 films
 
-        //when 'I go /reservation'
-        //then 'I can see empty list'
+        //when -> I get /api/books/ISBN
+        //then -> I can see book details
 
-        //when 'I post /reservation with all movies for standard period 2 days'
-        //then 'I have reserved all movies'
+        //when -> I delete /api/books with Fowler's book ISBN
+        //then -> Last added book should be deleted
 
-        //when 'I go /reservation'
-        //then 'I can see three position list'
+        //when -> I go api/books
+        //then -> I can see two books
 
-        //when 'I go /rental'
-        //then 'I can see empty list'
+        //when -> I get /api/books/instance/ISBN
+        //then -> I get book instance data
 
-        //when 'I post /rental with three films for standard 2 days'
-        //then 'I rent three films'
+        //when -> I post /api/books/instance/ID
+        //then -> I can see instance details
 
-        //when 'I go /rental'
-        //then 'I can see three position list'
+        //when -> I delete  /api/books/instance/ID
+        //then -> Instance should be succesfully deleted
 
-        //when 'I go /points'
-        //then 'I can see 3 points'
+        //when -> I post on /api/books/instance/ISBN
+        //then -> new book instance should be added
 
-        //when 'I go /review'
-        //then 'I can see empty list'
 
-        //when 'I post /review with my comment for Clerks'
-        //then 'My review was added'
-
-        //when 'I go /review'
-        //then 'I can see list with one position'
-
-        //when 'I go /points'
-        //then 'I can see 8 points'
     }
 }
