@@ -1,7 +1,7 @@
-package mw.dvd;
+package mw.library;
 
-import mw.dvd.movies.MoviesConfiguration;
-import org.springframework.boot.SpringApplication;
+import mw.library.catalogue.infrastructure.CatalogueConfiguration;
+import mw.library.catalogue.infrastructure.CatalogueDBConfiguration;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,13 +9,9 @@ import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
 @SpringBootApplication
-@EnableAutoConfiguration(exclude = MongoAutoConfiguration.class)
-public class DvdApplication {
-
+public class LibraryManagementApp {
 	public static void main(String[] args) {
-
-		new SpringApplicationBuilder().parent(DvdApplication.class)
-				.child(MoviesConfiguration.class)
+		new SpringApplicationBuilder().parent(LibraryManagementApp.class)
 				.web(WebApplicationType.SERVLET).run(args);
 	}
 

@@ -1,14 +1,33 @@
-package mw.dvd;
+package mw.library.catalogue;
 
+import mw.library.LibraryManagementApp;
+import mw.library.catalogue.CatalogueFacade;
+import mw.library.catalogue.infrastructure.CatalogueConfiguration;
+import mw.library.catalogue.infrastructure.CatalogueDBConfiguration;
+import mw.library.catalogue.inmemory.CatalogueConfigurationInMemory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.test.context.ContextConfiguration;
 
-class PositiveTestAcceptanceIT {
+
+@SpringBootTest(classes = LibraryManagementApp.class)
+@ContextConfiguration(classes = {CatalogueConfiguration.class})
+class CatalogueTestAcceptance {
+
+    @Autowired
+    private CatalogueFacade facade;
 
     @DisplayName("Positive test acceptance - rental dvd movie")
     @Test
     void positiveRental()
             throws Exception {
+        System.out.println("test");
         // given inventory with three films added
         // "Clerks" (type=old), "Frozen" (type="regular"), "Toy Story 4" (type=new)
 

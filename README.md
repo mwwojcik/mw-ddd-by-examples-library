@@ -7,7 +7,7 @@ as part of the project https://github.com/ddd-by-examples/library .
 ###General assumptions (interpretation)
 
 1. Two main roles: Patron and Researcher Patron.
-2. Access to some books may be restricted (available only for researcher patrons) 
+2. Access to some instances of books may be restricted (available only for researcher patrons) 
 3. Available book can be placed on hold (reserved) only by one patron at any given point in time.
 4. Regular patron is limited to five holds at any moment, researcher patron hasn't any limits.
 5. There are two main types of book holding:
@@ -25,3 +25,8 @@ with limitation to actual patron data, and without a daily dimension.
 
 ## Modules
 ![C4 Diagram Modules](doc/modules.png)
+
+##Disclosed aggregates
+There are two main aggregates:
+1. Library catalogue - simple CRUD without business logic. 
+2. Lending  - module with domain objects and business rules.
