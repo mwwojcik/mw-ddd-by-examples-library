@@ -1,4 +1,4 @@
-package mw.library.catalogue.infrastructure;
+package mw.library.catalogue.remote;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -7,21 +7,21 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.mongo.MongoRepositoriesAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
+import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoClientDbFactory;
 
 @EnableAutoConfiguration(exclude={MongoAutoConfiguration.class,
         MongoRepositoriesAutoConfiguration.class
-        ,MongoDataAutoConfiguration.class})
-public class CatalogueDBConfiguration {
+        ,MongoDataAutoConfiguration.class
+        , EmbeddedMongoAutoConfiguration.class})
+public class CatalogueDBTestConfiguration {
     public @Bean
     //MongoAutoConfiguration
     MongoClient mongoClient() {
-        return MongoClients.create("mongodb://10.22.33.78:27017");
+        return MongoClients.create("mongodb://10.22.33.78:27027");
     }
 
     public @Bean

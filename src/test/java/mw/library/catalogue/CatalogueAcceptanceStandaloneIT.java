@@ -1,31 +1,24 @@
 package mw.library.catalogue;
 
 import mw.library.LibraryManagementApp;
-import mw.library.catalogue.CatalogueFacade;
-import mw.library.catalogue.infrastructure.CatalogueConfiguration;
 import mw.library.catalogue.infrastructure.CatalogueDBConfiguration;
-import mw.library.catalogue.inmemory.CatalogueConfigurationInMemory;
+import mw.library.catalogue.standalone.LibraryManagementStandaloneApp;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.test.context.ContextConfiguration;
 
 
-@SpringBootTest(classes = LibraryManagementApp.class)
-@ContextConfiguration(classes = {CatalogueConfiguration.class})
-class CatalogueTestAcceptance {
+@SpringBootTest(classes = LibraryManagementStandaloneApp.class)
+class CatalogueAcceptanceStandaloneIT {
 
     @Autowired
     private CatalogueFacade facade;
 
     @DisplayName("Positive test acceptance - rental dvd movie")
     @Test
-    void positiveRental()
+    void acceptanceTestInStandaloneDB()
             throws Exception {
         System.out.println("test");
         // given inventory with three films added
