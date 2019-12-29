@@ -20,13 +20,8 @@ class BookInstance {
     @NonNull
     BookType bookType;
 
-    static BookInstance of(Book book,BookType type) {
-        return new BookInstance(book.getBookISBN(),new BookId(UUID.randomUUID()),type);
+    static BookInstance of(Book book, BookType type) {
+        return new BookInstance(book.getBookISBN(), new BookId(UUID.randomUUID()), type);
     }
 }
 
-@Value
-class BookId {
-    @NonNull
-    UUID bookId;
-}

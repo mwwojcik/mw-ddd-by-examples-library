@@ -7,10 +7,13 @@ import mw.library.catalogue.BookInstance;
 import mw.library.catalogue.CatalogueRepository;
 import mw.library.catalogue.ISBN;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 class CatalogueDatabase implements CatalogueRepository {
-    private  CatalogueBookMongoRepository bookRepository;
+    private CatalogueBookMongoRepository bookRepository;
     private CatalogueBookInstMongoRepository bookInstanceRepository;
 
     @Override
@@ -26,5 +29,25 @@ class CatalogueDatabase implements CatalogueRepository {
     @Override
     public Optional<Book> findBy(ISBN isbn) {
         return bookRepository.findById(isbn);
+    }
+
+    @Override
+    public List<Book> findAllBooks() {
+        return null;
+    }
+
+    @Override
+    public void deleteBookBy(String isbn) {
+
+    }
+
+    @Override
+    public List<BookInstance> findInstancesBy(ISBN isbn) {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public void deleteInstanceBy(String isbn) {
+
     }
 }

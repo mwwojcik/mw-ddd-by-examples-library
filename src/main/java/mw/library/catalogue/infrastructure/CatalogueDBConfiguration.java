@@ -8,26 +8,24 @@ import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfigurat
 import org.springframework.boot.autoconfigure.data.mongo.MongoRepositoriesAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoClientDbFactory;
 
-@EnableAutoConfiguration(exclude={MongoAutoConfiguration.class,
+@EnableAutoConfiguration(exclude = {MongoAutoConfiguration.class,
         MongoRepositoriesAutoConfiguration.class
-        ,MongoDataAutoConfiguration.class})
+        , MongoDataAutoConfiguration.class})
 public class CatalogueDBConfiguration {
     public @Bean
-    //MongoAutoConfiguration
+        //MongoAutoConfiguration
     MongoClient mongoClient() {
         return MongoClients.create("mongodb://10.22.33.78:27017");
     }
 
     public @Bean
-    //MongoAutoConfiguration
+        //MongoAutoConfiguration
     MongoDbFactory mongoDbFactory(@Autowired MongoClient client) {
-        return new SimpleMongoClientDbFactory( client, "mw-library-database");
+        return new SimpleMongoClientDbFactory(client, "mw-library-database");
     }
 
     @Bean

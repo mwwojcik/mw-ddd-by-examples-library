@@ -2,9 +2,7 @@ package mw.library.catalogue.remote;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import mw.library.catalogue.CatalogueFacade;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.mongo.MongoRepositoriesAutoConfiguration;
@@ -15,21 +13,21 @@ import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoClientDbFactory;
 
-@EnableAutoConfiguration(exclude={MongoAutoConfiguration.class,
+@EnableAutoConfiguration(exclude = {MongoAutoConfiguration.class,
         MongoRepositoriesAutoConfiguration.class
-        ,MongoDataAutoConfiguration.class
+        , MongoDataAutoConfiguration.class
         , EmbeddedMongoAutoConfiguration.class})
 public class CatalogueDBTestConfiguration {
     public @Bean
-    //MongoAutoConfiguration
+        //MongoAutoConfiguration
     MongoClient mongoClient() {
         return MongoClients.create("mongodb://localhost:28017");
     }
 
     public @Bean
-    //MongoAutoConfiguration
+        //MongoAutoConfiguration
     MongoDbFactory mongoDbFactory(@Autowired MongoClient client) {
-        return new SimpleMongoClientDbFactory( client, "mw-library-database");
+        return new SimpleMongoClientDbFactory(client, "mw-library-database");
     }
 
     @Bean

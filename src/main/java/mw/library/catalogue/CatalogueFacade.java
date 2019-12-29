@@ -24,10 +24,19 @@ public class CatalogueFacade {
     }
 
     public List<Book> findAllBooks() {
-        return null;
+        return repository.findAllBooks();
     }
 
     public void deleteBy(String isbn) {
+        repository.deleteBookBy(isbn);
+    }
+
+    public List<BookInstance> findInstancesBy(ISBN isbn) {
+        return repository.findInstancesBy(isbn);
+    }
+
+    public void deleteInstanceBy(String isbn) {
+        repository.deleteInstanceBy(isbn);
 
     }
 }
