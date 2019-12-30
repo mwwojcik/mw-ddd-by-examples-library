@@ -5,6 +5,8 @@ import mw.library.catalogue.inmemory.CatalogueConfigurationInMemory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 class BookFacadeAcceptanceInMemoryTest {
 
@@ -16,38 +18,47 @@ class BookFacadeAcceptanceInMemoryTest {
 
         // given inventory with two books added
         // "Domain-Driven Design" - Eric Evans, "Implementing Domain Driven Desing" - Vaughn Vernon
-        facade.saveNew(new Book(BooksFixture.DDD_ISBN_STR, "Eric Evans", "Domain-Driven Design"));
-        facade.saveNew(new Book(BooksFixture.DDD_ISBN_STR_01, "Vaughn Vernon", "Implementing Domain Driven Desing"));
+        var evans = facade.saveNew(new Book(BooksFixture.DDD_ISBN_STR, "Eric Evans", "Domain-Driven Design"));
+        var vernon = facade.saveNew(new Book(BooksFixture.DDD_ISBN_STR_01, "Vaughn Vernon", "Implementing Domain Driven Desing"));
 
         // when -> I get all books
+        var result = facade.findAllBooks();
         // then -> I can see 2 two books'
-
+        assertThat(result).size().isEqualTo(2);
         //when -> I add book with data:"Analysis Patterns"-Martin Fowler'
+        var addResult = facade.saveNew(new Book(BooksFixture.DDD_ISBN_STR_02, "Martin Fowler", "Analysis Patterns"));
         //then -> Book should be added
+        assertThat(addResult).isNotNull();
 
         // when -> I get all books
+        var resAllThree = facade.findAllBooks();
         // then -> I can see 3 books
+        assertThat(resAllThree).size().isEqualTo(3);
 
         //when -> I get one book via ISBN
+        var res = facade.findBy(new ISBN(BooksFixture.DDD_ISBN_STR_02));
         //then -> I can see book details
+        assertThat(res).isNotEmpty();
+
 
         //when -> I delete book Fowler's book ISBN
-        //then -> Last added book should be deleted
+        facade.deleteBy(new ISBN(BooksFixture.DDD_ISBN_STR_02));
 
-        //when -> I get all books
-        //then -> I can see two books
-
-        //when -> I get book instance via ISBN
-        //then -> I get book instance data
+        // when -> I get all books
+        var resOnlyTwo = facade.findAllBooks();
+        // then -> I can see 2 two books'
+        assertThat(result).size().isEqualTo(2);
 
         //when -> I add instance detail
+        var evansInstRes = facade.saveNew(BookInstance.of(evans, BookType.Typical));
         //then -> One instance should be added
+        assertThat(evansInstRes).isNotNull();
+        assertThat(evansInstRes.getBookId()).isNotNull();
 
         //when -> I delete  one instalnce
+        facade.deleteInstanceBy(evansInstRes.getBookId());
         //then -> Instance should be succesfully deleted
-
-        //when -> I add new instance
-        //then -> new book instance should be added
-
+        var resAfterDel = facade.findInstancesBy(evansInstRes.getBookId());
+        assertThat(resAfterDel).isNull();
     }
 }

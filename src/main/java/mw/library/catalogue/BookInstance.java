@@ -1,9 +1,6 @@
 package mw.library.catalogue;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.NonNull;
-import lombok.Value;
+import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.UUID;
@@ -11,6 +8,7 @@ import java.util.UUID;
 @Document
 @Value
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@EqualsAndHashCode(of = "bookId")
 public
 class BookInstance {
     @NonNull

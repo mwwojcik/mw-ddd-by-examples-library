@@ -1,9 +1,7 @@
 package mw.library.catalogue.infrastructure;
 
 import lombok.AllArgsConstructor;
-import mw.library.catalogue.Book;
-import mw.library.catalogue.BookInstance;
-import mw.library.catalogue.CatalogueFacade;
+import mw.library.catalogue.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +31,7 @@ class CatalogueBookInstanceController {
     }
 
     @DeleteMapping("/{bookId}")
-    public void deleteBook(@PathVariable("bookId") String isbn) {
+    public void deleteBook(@PathVariable("bookId") BookId isbn) {
         facade.deleteInstanceBy(isbn);
     }
 }

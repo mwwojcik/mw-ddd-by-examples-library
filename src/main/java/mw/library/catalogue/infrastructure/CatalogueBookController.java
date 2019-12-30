@@ -43,7 +43,7 @@ class CatalogueBookController {
     }
 
     @DeleteMapping("/{isbn}")
-    public void deleteBook(@PathVariable("isbn") String isbn) {
+    public void deleteBook(@PathVariable("isbn") ISBN isbn) {
         facade.deleteBy(isbn);
     }
 }

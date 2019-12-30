@@ -19,13 +19,15 @@ public class InMemoryCatalogueDatabase implements CatalogueRepository {
 
     @Override
     public Book saveNew(Book book) {
-        return books.put(book.getBookISBN(), book);
+        books.put(book.getBookISBN(), book);
+        return books.get(book.getBookISBN());
     }
 
     @Override
     public BookInstance saveNew(BookInstance bookInstance) {
+        instances.put(bookInstance.getBookId(), bookInstance);
+        return instances.get(bookInstance.getBookId());
 
-        return instances.put(new BookId(UUID.randomUUID()), bookInstance);
     }
 
     @Override
@@ -39,25 +41,19 @@ public class InMemoryCatalogueDatabase implements CatalogueRepository {
     }
 
     @Override
-    public void deleteBookBy(String isbn) {
-        books.remove(new ISBN(isbn));
+    public void deleteBookBy(ISBN isbn) {
+        books.remove(isbn);
     }
 
     @Override
-    public List<BookInstance> findInstancesBy(ISBN isbn) {
-        var found = instances.values().stream().filter(it -> it.getBookISBN().getIsbn().equals(isbn)).collect(Collectors.toList());
-        return found;
+    public BookInstance findInstancesBy(BookId bookId) {
+        return instances.get(bookId);
+
     }
 
     @Override
-    public void deleteInstanceBy(String isbn) {
-        var bookIds =
-                instances.values().stream().filter(b -> b.getBookISBN().getIsbn().equals(isbn))
-                        .map(b -> b.getBookId()).collect(Collectors.toList());
-
-        bookIds.forEach(it ->
-                instances.remove(it)
-        );
+    public void deleteInstanceBy(BookId bookId) {
+        instances.remove(bookId);
 
     }
 }

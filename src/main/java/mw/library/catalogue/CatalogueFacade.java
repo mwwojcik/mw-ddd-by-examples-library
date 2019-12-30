@@ -27,15 +27,15 @@ public class CatalogueFacade {
         return repository.findAllBooks();
     }
 
-    public void deleteBy(String isbn) {
+    public void deleteBy(ISBN isbn) {
         repository.deleteBookBy(isbn);
     }
 
-    public List<BookInstance> findInstancesBy(ISBN isbn) {
+    public BookInstance findInstancesBy(BookId isbn) {
         return repository.findInstancesBy(isbn);
     }
 
-    public void deleteInstanceBy(String isbn) {
+    public void deleteInstanceBy(BookId isbn) {
         repository.deleteInstanceBy(isbn);
 
     }

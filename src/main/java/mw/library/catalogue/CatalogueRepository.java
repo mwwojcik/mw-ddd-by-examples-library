@@ -12,9 +12,9 @@ public interface CatalogueRepository {
 
     List<Book> findAllBooks();
 
-    void deleteBookBy(String isbn);
+    void deleteBookBy(ISBN isbn);
 
-    List<BookInstance> findInstancesBy(ISBN isbn);
+    BookInstance findInstancesBy(BookId isbn);
 
-    void deleteInstanceBy(String isbn);
+    void deleteInstanceBy(BookId isbn);
 }

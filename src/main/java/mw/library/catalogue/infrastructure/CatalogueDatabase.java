@@ -2,10 +2,7 @@ package mw.library.catalogue.infrastructure;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import mw.library.catalogue.Book;
-import mw.library.catalogue.BookInstance;
-import mw.library.catalogue.CatalogueRepository;
-import mw.library.catalogue.ISBN;
+import mw.library.catalogue.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -37,17 +34,17 @@ class CatalogueDatabase implements CatalogueRepository {
     }
 
     @Override
-    public void deleteBookBy(String isbn) {
+    public void deleteBookBy(ISBN isbn) {
 
     }
 
     @Override
-    public List<BookInstance> findInstancesBy(ISBN isbn) {
-        return Collections.emptyList();
+    public BookInstance findInstancesBy(BookId isbn) {
+        return null;//Collections.emptyList();
     }
 
     @Override
-    public void deleteInstanceBy(String isbn) {
+    public void deleteInstanceBy(BookId isbn) {
 
     }
 }
