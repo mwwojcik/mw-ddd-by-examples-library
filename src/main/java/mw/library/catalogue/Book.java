@@ -20,7 +20,6 @@ public class Book {
     Book(String isbn, String author, String title) {
         this(new ISBN(isbn), new Author(author), new Title(title));
     }
-
 }
 
 @Value
@@ -29,7 +28,6 @@ class Author {
     private String author;
 
     public Author(String author) {
-
         if (author == null || author.isEmpty()) {
             throw new IllegalArgumentException("Book author cannot be empty!");
         }
@@ -39,15 +37,11 @@ class Author {
 
 @Value
 class Title {
-
     private String title;
-
     public Title(String title) {
-
         if (title == null || title.isEmpty()) {
             throw new IllegalArgumentException("Book title cannot be empty!");
         }
-
         this.title = title;
     }
 }

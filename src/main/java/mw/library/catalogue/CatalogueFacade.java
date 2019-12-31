@@ -15,20 +15,24 @@ public class CatalogueFacade {
         return repository.saveNew(book);
     }
 
-    public BookInstance saveNew(BookInstance bookInstance) {
-        return repository.saveNew(bookInstance);
-    }
-
     public Optional<Book> findBy(ISBN isbn) {
         return repository.findBy(isbn);
+    }
+
+    public void deleteBy(ISBN isbn) {
+        repository.deleteBookBy(isbn);
     }
 
     public List<Book> findAllBooks() {
         return repository.findAllBooks();
     }
 
-    public void deleteBy(ISBN isbn) {
-        repository.deleteBookBy(isbn);
+    public BookInstance saveNew(BookInstance bookInstance) {
+        return repository.saveNew(bookInstance);
+    }
+
+    public List<BookInstance>findInstancesByBookISBN(ISBN isbn){
+        return repository.findInstancesBy(isbn);
     }
 
     public BookInstance findInstancesBy(BookId isbn) {
@@ -37,6 +41,6 @@ public class CatalogueFacade {
 
     public void deleteInstanceBy(BookId isbn) {
         repository.deleteInstanceBy(isbn);
-
     }
+
 }

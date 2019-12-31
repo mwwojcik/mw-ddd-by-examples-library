@@ -7,7 +7,6 @@ import mw.library.catalogue.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -37,7 +36,9 @@ public class InMemoryCatalogueDatabase implements CatalogueRepository {
 
     @Override
     public List<Book> findAllBooks() {
-        return books.values().stream().collect(Collectors.toList());
+
+        return books.values().stream()
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -48,12 +49,17 @@ public class InMemoryCatalogueDatabase implements CatalogueRepository {
     @Override
     public BookInstance findInstancesBy(BookId bookId) {
         return instances.get(bookId);
+    }
 
+    @Override
+    public List<BookInstance> findInstancesBy(ISBN isbn) {
+        return instances.values().stream()
+                .filter(i -> i.getBookISBN().equals(isbn))
+                .collect(Collectors.toList());
     }
 
     @Override
     public void deleteInstanceBy(BookId bookId) {
         instances.remove(bookId);
-
     }
 }

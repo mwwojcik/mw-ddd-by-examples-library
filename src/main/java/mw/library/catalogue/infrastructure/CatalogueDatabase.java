@@ -44,6 +44,11 @@ class CatalogueDatabase implements CatalogueRepository {
     }
 
     @Override
+    public List<BookInstance> findInstancesBy(ISBN isbn) {
+        return null;
+    }
+
+    @Override
     public void deleteInstanceBy(BookId isbn) {
 
     }

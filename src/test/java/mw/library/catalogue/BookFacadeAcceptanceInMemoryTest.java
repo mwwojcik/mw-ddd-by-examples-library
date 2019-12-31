@@ -15,7 +15,6 @@ class BookFacadeAcceptanceInMemoryTest {
     @DisplayName("In memory test")
     @Test
     void acceptanceTestInMemory() throws Exception {
-
         // given inventory with two books added
         // "Domain-Driven Design" - Eric Evans, "Implementing Domain Driven Desing" - Vaughn Vernon
         var evans = facade.saveNew(new Book(BooksFixture.DDD_ISBN_STR, "Eric Evans", "Domain-Driven Design"));
@@ -54,6 +53,11 @@ class BookFacadeAcceptanceInMemoryTest {
         //then -> One instance should be added
         assertThat(evansInstRes).isNotNull();
         assertThat(evansInstRes.getBookId()).isNotNull();
+
+        //when
+        var evansAllInst=facade.findInstancesByBookISBN(evans.getBookISBN());
+        //then
+        assertThat(evansAllInst).isNotEmpty();
 
         //when -> I delete  one instalnce
         facade.deleteInstanceBy(evansInstRes.getBookId());
