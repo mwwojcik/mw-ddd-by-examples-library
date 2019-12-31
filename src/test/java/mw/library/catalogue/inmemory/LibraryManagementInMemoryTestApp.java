@@ -8,12 +8,14 @@ import org.springframework.boot.autoconfigure.data.mongo.MongoRepositoriesAutoCo
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
 @EnableAutoConfiguration(exclude = {MongoAutoConfiguration.class,
         MongoRepositoriesAutoConfiguration.class
         , MongoDataAutoConfiguration.class
         , EmbeddedMongoAutoConfiguration.class})
+@Import(CatalogueConfigurationInMemory.class)
 public class LibraryManagementInMemoryTestApp {
     public static void main(String[] args) {
         new SpringApplicationBuilder()

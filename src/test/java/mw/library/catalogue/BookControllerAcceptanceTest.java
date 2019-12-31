@@ -1,7 +1,10 @@
 package mw.library.catalogue;
 
+import org.hamcrest.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 
 abstract class BookControllerAcceptanceTest {
@@ -19,6 +22,13 @@ abstract class BookControllerAcceptanceTest {
         getFacade().saveNew(new Book(BooksFixture.DDD_ISBN_STR_01, "Vaughn Vernon", "Implementing Domain Driven Desing"));
 
         // when -> I go api/books
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/books"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath(
+                        "$", Matchers.is(Matchers.empty())
+                        )
+                );
+
         // then -> I can see two books'
 
         //when -> I post api/books wit data:"Analysis Patterns"-Martin Fowler'

@@ -7,10 +7,12 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
 @Import({CatalogueConfiguration.class,CatalogueDBConfiguration.class})
+@ComponentScan({""})
 public class LibraryManagementApp {
 	public static void main(String[] args) {
 		new SpringApplicationBuilder()
