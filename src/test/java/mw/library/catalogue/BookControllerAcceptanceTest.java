@@ -1,5 +1,6 @@
 package mw.library.catalogue;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
@@ -10,6 +11,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 abstract class BookControllerAcceptanceTest {
     @Autowired
     private MockMvc mockMvc;
+
+    private ObjectMapper objectMapper=new ObjectMapper();
 
     protected abstract CatalogueFacade getFacade();
 
@@ -22,14 +25,19 @@ abstract class BookControllerAcceptanceTest {
         getFacade().saveNew(new Book(BooksFixture.DDD_ISBN_STR_01, "Vaughn Vernon", "Implementing Domain Driven Desing"));
 
         // when -> I go api/books
+        // then -> I can see two books'
         mockMvc.perform(MockMvcRequestBuilders.get("/api/books"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath(
-                        "$", Matchers.is(Matchers.empty())
+                        "$", Matchers.is(Matchers.hasSize(2))
                         )
-                );
+                )
+                .andExpect(MockMvcResultMatchers.jsonPath(
+                        "$[0].bookISBN.isbn", Matchers.is(Matchers.equalTo(BooksFixture.DDD_ISBN_STR))
+                        )
+                ) ;
 
-        // then -> I can see two books'
+
 
         //when -> I post api/books wit data:"Analysis Patterns"-Martin Fowler'
         //then -> Book should be added
