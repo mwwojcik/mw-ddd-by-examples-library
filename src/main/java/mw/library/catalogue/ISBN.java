@@ -1,8 +1,13 @@
 package mw.library.catalogue;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Value;
 
-@Value
+@NoArgsConstructor
+@Getter
+@EqualsAndHashCode(of="isbn")
 public class ISBN {
     private String isbn;
 

@@ -1,31 +1,29 @@
 package mw.library.catalogue;
 
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Value;
+import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 
 @Document
-@Value
 @EqualsAndHashCode(of = "bookIsbn")
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor
+@Getter
 public class Book {
-    private ISBN bookISBN;
-    private Author author;
-    private Title title;
-
+    private ISBN bookISBN =null ;
+    private Author author = null;
+    private Title title =null ;
     Book(String isbn, String author, String title) {
         this(new ISBN(isbn), new Author(author), new Title(title));
     }
 }
 
-@Value
+@NoArgsConstructor
+@Getter
 class Author {
 
-    private String author;
+    private String author = null;
 
     public Author(String author) {
         if (author == null || author.isEmpty()) {
@@ -35,7 +33,8 @@ class Author {
     }
 }
 
-@Value
+@NoArgsConstructor
+@Getter
 class Title {
     private String title;
     public Title(String title) {

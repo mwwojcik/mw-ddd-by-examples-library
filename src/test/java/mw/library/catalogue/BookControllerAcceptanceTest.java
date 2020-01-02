@@ -3,16 +3,20 @@ package mw.library.catalogue;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 
 abstract class BookControllerAcceptanceTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private ObjectMapper objectMapper=new ObjectMapper();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     protected abstract CatalogueFacade getFacade();
 
@@ -35,18 +39,33 @@ abstract class BookControllerAcceptanceTest {
                 .andExpect(MockMvcResultMatchers.jsonPath(
                         "$[0].bookISBN.isbn", Matchers.is(Matchers.equalTo(BooksFixture.DDD_ISBN_STR))
                         )
-                ) ;
+                );
 
 
+        var fowler = new Book(BooksFixture.DDD_ISBN_STR_03, "Martin Fowler", "Analysis Patterns");
+        var fowler_json = objectMapper.writeValueAsString(fowler);
 
+        System.out.println(fowler_json);
         //when -> I post api/books wit data:"Analysis Patterns"-Martin Fowler'
-        //then -> Book should be added
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/books")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(fowler_json))
+                //then -> Book should be added
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andDo(MockMvcResultHandlers.print());
+
 
         // when -> I go api/books
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/books/"))
         // then -> I can see 3 books
+        .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$",Matchers.hasSize(3)));
 
         //when -> I get /api/books/ISBN
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/books/{isbn}",BooksFixture.DDD_ISBN_STR_03))
         //then -> I can see requested book details
+        .andExpect(MockMvcResultMatchers.status().isFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.bookISBN.isbn",Matchers.equalTo(BooksFixture.DDD_ISBN_STR_03)));
 
         //when -> I delete /api/books with Fowler's book ISBN
         //then -> Last added book should be deleted
