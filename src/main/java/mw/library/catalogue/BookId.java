@@ -1,11 +1,12 @@
 package mw.library.catalogue;
 
-import lombok.NonNull;
-import lombok.Value;
+import lombok.*;
 
 import java.util.UUID;
 
-@Value
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
 public class BookId {
     @NonNull
     UUID bookId;

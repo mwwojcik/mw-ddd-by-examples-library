@@ -42,7 +42,9 @@ class CatalogueBookController {
         ).build();
     }
 
+
     @DeleteMapping("/{isbn}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBook(@PathVariable("isbn") ISBN isbn) {
         facade.deleteBy(isbn);
     }

@@ -35,8 +35,8 @@ public class CatalogueFacade {
         return repository.findInstancesBy(isbn);
     }
 
-    public BookInstance findInstancesBy(BookId isbn) {
-        return repository.findInstancesBy(isbn);
+    public Optional<BookInstance> findInstanceBy(BookId isbn) {
+        return repository.findInstanceBy(isbn);
     }
 
     public void deleteInstanceBy(BookId isbn) {

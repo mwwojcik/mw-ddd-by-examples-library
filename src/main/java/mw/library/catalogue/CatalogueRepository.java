@@ -10,7 +10,8 @@ public interface CatalogueRepository {
     void deleteBookBy(ISBN isbn);
 
     BookInstance saveNew(BookInstance bookInstance);
-    BookInstance findInstancesBy(BookId isbn);
+
+    Optional<BookInstance> findInstanceBy(BookId isbn);
     List<BookInstance> findInstancesBy(ISBN isbn);
     void deleteInstanceBy(BookId isbn);
 

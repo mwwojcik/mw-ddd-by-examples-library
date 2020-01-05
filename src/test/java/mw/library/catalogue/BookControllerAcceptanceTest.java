@@ -25,8 +25,8 @@ abstract class BookControllerAcceptanceTest {
 
         // given inventory with two books added
         // "Domain-Driven Design" - Eric Evans, "Implementing Domain Driven Desing" - Vaughn Vernon
-        getFacade().saveNew(new Book(BooksFixture.DDD_ISBN_STR, "Eric Evans", "Domain-Driven Design"));
-        getFacade().saveNew(new Book(BooksFixture.DDD_ISBN_STR_01, "Vaughn Vernon", "Implementing Domain Driven Desing"));
+        var evans=getFacade().saveNew(new Book(BooksFixture.DDD_ISBN_STR, "Eric Evans", "Domain-Driven Design"));
+        var vernon=getFacade().saveNew(new Book(BooksFixture.DDD_ISBN_STR_01, "Vaughn Vernon", "Implementing Domain Driven Desing"));
 
         // when -> I go api/books
         // then -> I can see two books'
@@ -68,13 +68,32 @@ abstract class BookControllerAcceptanceTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.bookISBN.isbn",Matchers.equalTo(BooksFixture.DDD_ISBN_STR_03)));
 
         //when -> I delete /api/books with Fowler's book ISBN
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/books/{isbn}",BooksFixture.DDD_ISBN_STR_03))
         //then -> Last added book should be deleted
+        .andExpect(MockMvcResultMatchers.status().isNoContent());
 
         //when -> I go api/books
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/books"))
         //then -> I can see two books
+        .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$",Matchers.hasSize(2)));
+
+        //when -> I add instance detail
+        var evansInst = BookInstance.of(evans,BookType.Typical);
+        var evansInstJSON=objectMapper.writeValueAsString(evansInst);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/books/instances")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(evansInstJSON)
+                )
+                //then -> One instance should be added
+                .andExpect(MockMvcResultMatchers.status().isCreated());
 
         //when -> I get /api/books/instance/ISBN
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/books/instances/{isbn}",BooksFixture.DDD_ISBN_STR))
         //then -> I get requested book instance data
+        .andExpect(MockMvcResultMatchers.jsonPath("$",Matchers.is(Matchers.hasSize(1))));
 
         //when -> I post /api/books/instance/ID
         //then -> I can see requested book instance details

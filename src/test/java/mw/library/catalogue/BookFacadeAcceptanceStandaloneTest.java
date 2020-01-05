@@ -2,15 +2,23 @@ package mw.library.catalogue;
 
 
 import mw.library.catalogue.inmemory.CatalogueConfigurationInMemory;
+import mw.library.catalogue.standalone.LibraryManagementStandaloneApp;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SpringBootTest(classes = LibraryManagementStandaloneApp.class)
+@AutoConfigureMockMvc
+@ComponentScan({"mw.library.catalogue.infrastructure"})
+class BookFacadeAcceptanceStandaloneTest {
 
-class BookFacadeAcceptanceInMemoryTest {
-
-    CatalogueFacade facade = CatalogueConfigurationInMemory.catalogueFacade();
+    @Autowired
+    CatalogueFacade facade;// = CatalogueConfigurationInMemory.catalogueFacade();
 
     @DisplayName("In memory test")
     @Test
@@ -62,7 +70,7 @@ class BookFacadeAcceptanceInMemoryTest {
         //when -> I delete  one instalnce
         facade.deleteInstanceBy(evansInstRes.getBookId());
         //then -> Instance should be succesfully deleted
-        var resAfterDel = facade.findInstancesBy(evansInstRes.getBookId());
+        var resAfterDel = facade.findInstanceBy(evansInstRes.getBookId());
         assertThat(resAfterDel).isNull();
     }
 }

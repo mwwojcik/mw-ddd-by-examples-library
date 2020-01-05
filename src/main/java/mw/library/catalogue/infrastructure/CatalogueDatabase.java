@@ -4,12 +4,12 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import mw.library.catalogue.*;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 class CatalogueDatabase implements CatalogueRepository {
+
     private CatalogueBookMongoRepository bookRepository;
     private CatalogueBookInstMongoRepository bookInstanceRepository;
 
@@ -30,17 +30,17 @@ class CatalogueDatabase implements CatalogueRepository {
 
     @Override
     public List<Book> findAllBooks() {
-        return null;
+        return bookRepository.findAll();
     }
 
     @Override
     public void deleteBookBy(ISBN isbn) {
-
+        bookRepository.deleteById(isbn);
     }
 
     @Override
-    public BookInstance findInstancesBy(BookId isbn) {
-        return null;//Collections.emptyList();
+    public Optional<BookInstance> findInstanceBy(BookId isbn) {
+        return bookInstanceRepository.findById(isbn);//Collections.emptyList();
     }
 
     @Override

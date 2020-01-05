@@ -17,8 +17,8 @@ class CatalogueBookInstanceController {
     private CatalogueFacade facade;
 
     @GetMapping("/{isbn}")
-    List<Book> findAllBookInstances(@PathVariable("isbn") String isbn) {
-        return null;
+    List<BookInstance> findAllBookInstances(@PathVariable("isbn") String isbn) {
+        return facade.findInstancesByBookISBN(new ISBN(isbn));
     }
 
     @PostMapping

@@ -47,8 +47,8 @@ public class InMemoryCatalogueDatabase implements CatalogueRepository {
     }
 
     @Override
-    public BookInstance findInstancesBy(BookId bookId) {
-        return instances.get(bookId);
+    public Optional<BookInstance> findInstanceBy(BookId bookId) {
+        return Optional.of(instances.get(bookId));
     }
 
     @Override
