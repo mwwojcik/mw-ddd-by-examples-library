@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
 @EnableAutoConfiguration(exclude = {MongoAutoConfiguration.class,
-        MongoRepositoriesAutoConfiguration.class
+         MongoRepositoriesAutoConfiguration.class
         , MongoDataAutoConfiguration.class
         , EmbeddedMongoAutoConfiguration.class})
 @Import(CatalogueConfigurationInMemory.class)

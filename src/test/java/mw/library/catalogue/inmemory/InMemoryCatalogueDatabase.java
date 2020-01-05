@@ -47,19 +47,23 @@ public class InMemoryCatalogueDatabase implements CatalogueRepository {
     }
 
     @Override
-    public Optional<BookInstance> findInstanceBy(BookId bookId) {
-        return Optional.of(instances.get(bookId));
+    public Optional<BookInstance> findBookInstanceBy(BookId bookId) {
+        var res=instances.get(bookId);
+        if (res == null) {
+            return Optional.empty();
+        }
+        return Optional.of(res);
     }
 
     @Override
-    public List<BookInstance> findInstancesBy(ISBN isbn) {
+    public List<BookInstance> findBookInstancesBy(ISBN isbn) {
         return instances.values().stream()
                 .filter(i -> i.getBookISBN().equals(isbn))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public void deleteInstanceBy(BookId bookId) {
+    public void deleteBookInstanceBy(BookId bookId) {
         instances.remove(bookId);
     }
 }

@@ -11,11 +11,33 @@ import java.util.Optional;
 class CatalogueDatabase implements CatalogueRepository {
 
     private CatalogueBookMongoRepository bookRepository;
+
     private CatalogueBookInstMongoRepository bookInstanceRepository;
+
+    @Override
+    public List<Book> findAllBooks() {
+        return bookRepository.findAll();
+    }
 
     @Override
     public Book saveNew(Book book) {
         return bookRepository.save(book);
+    }
+
+    @Override
+    public Optional<Book> findBy(ISBN isbn) {
+        return bookRepository.findByBookISBN(isbn);
+    }
+
+    @Override
+    public void deleteBookBy(ISBN isbn) {
+        bookRepository.deleteByBookISBN(isbn);
+    }
+
+
+    @Override
+    public List<BookInstance> findBookInstancesBy(ISBN isbn) {
+        return bookInstanceRepository.findByBookISBN(isbn);
     }
 
     @Override
@@ -24,32 +46,12 @@ class CatalogueDatabase implements CatalogueRepository {
     }
 
     @Override
-    public Optional<Book> findBy(ISBN isbn) {
-        return bookRepository.findById(isbn);
+    public Optional<BookInstance> findBookInstanceBy(BookId bookId) {
+        return bookInstanceRepository.findByBookId(bookId);
     }
 
     @Override
-    public List<Book> findAllBooks() {
-        return bookRepository.findAll();
-    }
-
-    @Override
-    public void deleteBookBy(ISBN isbn) {
-        bookRepository.deleteById(isbn);
-    }
-
-    @Override
-    public Optional<BookInstance> findInstanceBy(BookId isbn) {
-        return bookInstanceRepository.findById(isbn);//Collections.emptyList();
-    }
-
-    @Override
-    public List<BookInstance> findInstancesBy(ISBN isbn) {
-        return null;
-    }
-
-    @Override
-    public void deleteInstanceBy(BookId isbn) {
-
+    public void deleteBookInstanceBy(BookId bookId) {
+        bookInstanceRepository.deleteByBookId(bookId);
     }
 }

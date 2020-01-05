@@ -2,6 +2,7 @@ package mw.library.catalogue;
 
 
 import mw.library.catalogue.inmemory.CatalogueConfigurationInMemory;
+import mw.library.catalogue.inmemory.LibraryManagementInMemoryTestApp;
 import mw.library.catalogue.standalone.LibraryManagementStandaloneApp;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,24 +11,18 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 
-import static org.assertj.core.api.Assertions.assertThat;
+class BookFacadeAcceptanceInMemoryTest extends BookFacadeAcceptanceTest {
 
-@SpringBootTest(classes = LibraryManagementStandaloneApp.class)
-@AutoConfigureMockMvc
-@ComponentScan({"mw.library.catalogue.infrastructure"})
-class BookFacadeAcceptanceStandaloneTest extends BookFacadeAcceptanceTest {
-
-    @Autowired
-    CatalogueFacade facade;// = CatalogueConfigurationInMemory.catalogueFacade();
+    CatalogueFacade facade = CatalogueConfigurationInMemory.catalogueFacade();
 
     @Override
     protected CatalogueFacade getFacade() {
         return facade;
     }
 
-    @DisplayName("Standalone test")
+    @DisplayName("Positive test acceptance - add book to catalogue - in memory database instance")
     @Test
-    void acceptanceTestStandalone() throws Exception {
+    void acceptanceTestInMemory(){
         acceptance();
     }
 
