@@ -21,7 +21,7 @@ public class CatalogueDBTestConfiguration {
     public @Bean
         //MongoAutoConfiguration
     MongoClient mongoClient() {
-        return MongoClients.create("mongodb://localhost:28017");
+        return MongoClients.create("mongodb://10.22.33.78:28017");
     }
 
     public @Bean

@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
 @Import({CatalogueConfiguration.class,CatalogueDBConfiguration.class})
-@ComponentScan({""})
 public class LibraryManagementApp {
 	public static void main(String[] args) {
 		new SpringApplicationBuilder()

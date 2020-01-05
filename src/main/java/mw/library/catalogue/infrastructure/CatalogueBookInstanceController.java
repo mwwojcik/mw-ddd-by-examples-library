@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/books/instances")
@@ -17,8 +18,8 @@ class CatalogueBookInstanceController {
     private CatalogueFacade facade;
 
     @GetMapping("/{isbn}")
-    List<BookInstance> findAllBookInstances(@PathVariable("isbn") String isbn) {
-        return facade.findInstancesByBookISBN(new ISBN(isbn));
+    List<BookInstance> findAllBookInstances(@PathVariable("isbn") ISBN isbn) {
+        return facade.findInstancesByBookISBN(isbn);
     }
 
     @PostMapping
@@ -31,7 +32,8 @@ class CatalogueBookInstanceController {
     }
 
     @DeleteMapping("/{bookId}")
-    public void deleteBook(@PathVariable("bookId") BookId isbn) {
-        facade.deleteInstanceBy(isbn);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteBook(@PathVariable("bookId") UUID bookId) {
+        facade.deleteInstanceBy(new BookId(bookId));
     }
 }
