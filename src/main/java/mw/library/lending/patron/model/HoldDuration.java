@@ -1,5 +1,6 @@
 package mw.library.lending.patron.model;
 
+import io.vavr.control.Option;
 import lombok.Value;
 
 import java.time.Duration;
@@ -24,8 +25,8 @@ public class HoldDuration {
         return getTo().isEmpty();
     }
 
-    Optional<Instant> getTo() {
-        return Optional.of(to);
+    Option<Instant> getTo() {
+        return Option.of(to);
     }
 
     public static HoldDuration openEnded() {

@@ -1,5 +1,5 @@
 package mw.library.catalogue;
 
-enum BookType {
+public enum BookType {
     Typical, Restricted
 }
