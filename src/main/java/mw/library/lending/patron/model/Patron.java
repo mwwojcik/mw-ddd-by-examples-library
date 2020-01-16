@@ -32,13 +32,13 @@ public class Patron {
 
     public Either<BookHoldFailed, PatronEvent.BookPlacedOnHoldEvents>
     placeOnHold(AvailableBook aBook, HoldDuration holdDuration) {
-        Option<Rejection> rejection = patronCanHold(aBook,holdDuration);
+        Option<Rejection> rejection = patronCanHold(aBook, holdDuration);
 
-        if(rejection.isEmpty()){
-            PatronEvent.BookPlacedOnHold bookPlacedOnHold= PatronEvent.BookPlacedOnHold.bookPlacedOnHoldNow
+        if (rejection.isEmpty()) {
+            PatronEvent.BookPlacedOnHold bookPlacedOnHold = PatronEvent.BookPlacedOnHold.bookPlacedOnHoldNow
                     (aBook.getBookId(), aBook.type(), aBook.getLibraryBranch(), patron.getPatronId(), holdDuration);
 
-            if(patronHolds.maximumHoldsAfterHolding(aBook)){
+            if (patronHolds.maximumHoldsAfterHolding(aBook)) {
                 return announceSuccess(events(bookPlacedOnHold, MaximumNumberOfHoldsReached.now(patron, MAX_NUMBER_OF_HOLDS)));
             }
             return announceSuccess(events(bookPlacedOnHold));
@@ -50,7 +50,7 @@ public class Patron {
     private Option<Rejection> patronCanHold(AvailableBook aBook, HoldDuration holdDuration) {
         return placingOnHoldPolicies
                 .toStream()
-                .map(policy->policy.apply(aBook,this,holdDuration))
+                .map(policy -> policy.apply(aBook, this, holdDuration))
                 .find(Either::isLeft)
                 .map(Either::getLeft)
                 ;

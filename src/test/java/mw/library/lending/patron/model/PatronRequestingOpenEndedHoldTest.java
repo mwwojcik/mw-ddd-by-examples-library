@@ -17,7 +17,6 @@ class PatronRequestingOpenEndedHoldTest {
      throws Exception {
       // given
         Instant from=Instant.MIN;
-
         var aBook= circulatingAvailableBook();
         var patronId= PatronFixture.anyPatronId();
         var researcherPatron= PatronFixture.researcherPatronWithPolicy(patronId,PlacingOnHoldPolicy.onlyResearcherPatronsCanPlaceOpenEndedHolds);
@@ -31,10 +30,14 @@ class PatronRequestingOpenEndedHoldTest {
       @Test void regularPatronRequestOpenEndedHold()
        throws Exception {
         // given
+        Instant from =Instant.MIN;
+        var aBook=circulatingAvailableBook();
+        var patronId=PatronFixture.anyPatronId();
+        var regularPatron=PatronFixture.regularPatronWithPolicy(patronId,PlacingOnHoldPolicy.onlyResearcherPatronsCanPlaceOpenEndedHolds);
         // when 
+        var result=regularPatron.placeOnHold(aBook,HoldDuration.openEnded(from));
         // then
-
-        //Fail.fail("Write your test");
+        Assertions.assertThat(result.isLeft());
 
         }
 }

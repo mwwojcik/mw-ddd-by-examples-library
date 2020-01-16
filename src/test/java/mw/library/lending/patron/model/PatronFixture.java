@@ -5,6 +5,7 @@ import io.vavr.collection.List;
 import java.util.HashSet;
 import java.util.UUID;
 
+import static mw.library.lending.patron.model.PatronType.Regular;
 import static mw.library.lending.patron.model.PatronType.Researcher;
 
 class PatronFixture {
@@ -12,8 +13,8 @@ class PatronFixture {
         return new PatronId(UUID.randomUUID());
     }
 
-    public static Patron researcherPatronWithPolicy(PatronId patronId, PlacingOnHoldPolicy onlyResearcherPatronsCanPlaceOpenEndedHolds) {
-        return patronWithPolicy(patronId,Researcher,onlyResearcherPatronsCanPlaceOpenEndedHolds);
+    public static Patron researcherPatronWithPolicy(PatronId patronId, PlacingOnHoldPolicy policy) {
+        return patronWithPolicy(patronId,Researcher,policy);
     }
 
     private static Patron patronWithPolicy(PatronId patronId, PatronType type, PlacingOnHoldPolicy policy) {
@@ -26,5 +27,9 @@ class PatronFixture {
 
     private static PatronInformation patronInformation(PatronId patronId, PatronType type) {
         return new PatronInformation(patronId,type);
+    }
+
+    public static Patron regularPatronWithPolicy(PatronId patronId, PlacingOnHoldPolicy policy) {
+        return patronWithPolicy(patronId,Regular,policy);
     }
 }
