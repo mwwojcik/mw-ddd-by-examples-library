@@ -1,12 +1,20 @@
 package mw.library.lending.patron.model;
 
+import io.vavr.collection.List;
 import io.vavr.control.Either;
+import io.vavr.control.Option;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import mw.library.commons.events.EitherResult;
 import mw.library.lending.book.model.AvailableBook;
+import mw.library.lending.librarybranch.model.LibraryBranchId;
 
-import java.util.List;
+import static mw.library.commons.events.EitherResult.announceSuccess;
+import static mw.library.lending.patron.model.PatronEvent.BookPlacedOnHoldEvents.events;
+import static mw.library.lending.patron.model.PatronHolds.MAX_NUMBER_OF_HOLDS;
 
 @EqualsAndHashCode(of = "patron")
+@AllArgsConstructor
 public class Patron {
     private PatronInformation patron;
 
@@ -18,13 +26,46 @@ public class Patron {
 
 //TODO
 
-    public Either<PatronEvent.BookHoldFailed, PatronEvent.BookPlacedOnHoldEvents> placeOnHold(AvailableBook book) {
+    public Either<BookHoldFailed, PatronEvent.BookPlacedOnHoldEvents> placeOnHold(AvailableBook book) {
         return placeOnHold(book, HoldDuration.openEnded());
     }
 
-    public Either<PatronEvent.BookHoldFailed, PatronEvent.BookPlacedOnHoldEvents>
+    public Either<BookHoldFailed, PatronEvent.BookPlacedOnHoldEvents>
     placeOnHold(AvailableBook aBook, HoldDuration holdDuration) {
-        //todo
-        return null;
+        Option<Rejection> rejection = patronCanHold(aBook,holdDuration);
+
+        if(rejection.isEmpty()){
+            PatronEvent.BookPlacedOnHold bookPlacedOnHold= PatronEvent.BookPlacedOnHold.bookPlacedOnHoldNow
+                    (aBook.getBookId(), aBook.type(), aBook.getLibraryBranch(), patron.getPatronId(), holdDuration);
+
+            if(patronHolds.maximumHoldsAfterHolding(aBook)){
+                return announceSuccess(events(bookPlacedOnHold, MaximumNumberOfHoldsReached.now(patron, MAX_NUMBER_OF_HOLDS)));
+            }
+            return announceSuccess(events(bookPlacedOnHold));
+        }
+
+        return EitherResult.announceFailure(BookHoldFailed.now(rejection.get(), aBook.getBookId(), aBook.getLibraryBranch(), patron));
+    }
+
+    private Option<Rejection> patronCanHold(AvailableBook aBook, HoldDuration holdDuration) {
+        return placingOnHoldPolicies
+                .toStream()
+                .map(policy->policy.apply(aBook,this,holdDuration))
+                .find(Either::isLeft)
+                .map(Either::getLeft)
+                ;
+
+    }
+
+    boolean isRegular() {
+        return patron.isRegular();
+    }
+
+    public int overdueCheckoutsAt(LibraryBranchId libraryBranchId) {
+        return overdueCheckouts.countAt(libraryBranchId);
+    }
+
+    public int numberOfHolds() {
+        return patronHolds.count();
     }
 }
