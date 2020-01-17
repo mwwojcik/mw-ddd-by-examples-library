@@ -69,13 +69,14 @@ The lambda realizing business logic is defined in PlacingOnHoldPolicy interface.
             };
 ```
 
-This fragment of code realizes main goals
-* creates BookPlacedOnHold event
-* creates BookPlacedOnHoldEvents
-* emites  BookPlacedOnHoldEvents
+Main goals of placeOnHold() method
+* checking business logic
+* creating BookPlacedOnHold event
+* creating BookPlacedOnHoldEvents
+* BookPlacedOnHoldEvents emission
 ```java
 placeOnHold(AvailableBook aBook, HoldDuration holdDuration) {
-        
+         Option<Rejection> rejection = patronCanHold(aBook, holdDuration);
 
         if (rejection.isEmpty()) {
             PatronEvent.BookPlacedOnHold bookPlacedOnHold = 
@@ -96,9 +97,10 @@ public static BookPlacedOnHoldEvents events(BookPlacedOnHold bookPlacedOnHold) {
         }
 ```
 
-On success, the right side of Either generic is returned, in case of failure, the left side. 
-'''java 
-public interface EitherResult {
+On success, the right side of Either generic is returned, in case of failure, the left side.
+ 
+```java 
+    public interface EitherResult {
 
     public static <L, R> Either<L, R> announceFailure(L left) {
         return left(left);
