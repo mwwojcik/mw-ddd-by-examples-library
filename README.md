@@ -26,7 +26,12 @@ with limitation to actual patron data, and without a daily dimension.
 ## Modules
 ![C4 Diagram Modules](doc/modules.png)
 
-##Disclosed aggregates
+##Aggregates
 There are two main aggregates:
 1. Library catalogue - simple CRUD without business logic. 
 2. Lending  - module with domain objects and business rules.
+
+##Implementation
+
+### Hold on book process
+![Hold on book sequence](doc/holdOnBook.png)
