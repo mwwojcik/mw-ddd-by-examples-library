@@ -46,7 +46,7 @@ placeOnHold(AvailableBook aBook, HoldDuration holdDuration) {
     }
    
    ```
-Checking if the conditions allowing for reservations are met are carried out in the method Patron.patronCanHold()
+Checking booking conditions delegated to the method Patron.patronCanHold()
 ```java
 private Option<Rejection> patronCanHold(AvailableBook aBook, HoldDuration holdDuration) {
         return placingOnHoldPolicies
