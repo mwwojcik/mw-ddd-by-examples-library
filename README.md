@@ -35,3 +35,58 @@ There are two main aggregates:
 
 ### Hold on book process
 ![Hold on book sequence](doc/holdOnBook.png)
+
+#### 
+
+  ```java
+placeOnHold(AvailableBook aBook, HoldDuration holdDuration) {
+        Option<Rejection> rejection = patronCanHold(aBook, holdDuration);
+       ...
+    }
+   
+   ```
+```java
+private Option<Rejection> patronCanHold(AvailableBook aBook, HoldDuration holdDuration) {
+        return placingOnHoldPolicies
+                .toStream()
+                .map(policy -> policy.apply(aBook, this, holdDuration))
+                .find(Either::isLeft)
+                .map(Either::getLeft)
+                ;
+
+    }
+```
+```java
+ PlacingOnHoldPolicy onlyResearcherPatronsCanHoldRestrictedBooksPolicy =
+            (AvailableBook book, Patron patron, HoldDuration holdDuration) -> {
+                if (book.isRestricted() && patron.isRegular()) {
+                    return left(Rejection.withReason("Regular patrons cannot hold restricted books"));
+                }
+                return right(new Allowance());
+            };
+```
+
+
+```java
+placeOnHold(AvailableBook aBook, HoldDuration holdDuration) {
+        Option<Rejection> rejection = patronCanHold(aBook, holdDuration);
+
+        if (rejection.isEmpty()) {
+            PatronEvent.BookPlacedOnHold bookPlacedOnHold = PatronEvent.BookPlacedOnHold.bookPlacedOnHoldNow
+                    (aBook.getBookId(), aBook.type(), aBook.getLibraryBranch(), patron.getPatronId(), holdDuration);
+
+      ...
+            return announceSuccess(events(bookPlacedOnHold));
+        }
+
+        return EitherResult.announceFailure(BookHoldFailed.now(rejection.get(), aBook.getBookId(), aBook.getLibraryBranch(), patron));
+    }
+   
+   ```
+
+
+```java
+public static BookPlacedOnHoldEvents events(BookPlacedOnHold bookPlacedOnHold) {
+            return new BookPlacedOnHoldEvents(bookPlacedOnHold.getPatronId(), bookPlacedOnHold, Option.none());
+        }
+```
