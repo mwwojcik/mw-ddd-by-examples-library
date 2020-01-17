@@ -38,6 +38,7 @@ There are two main aggregates:
 
 #### 
 
+Book reservation business logic is realized by method Patron.placeOnHold()
   ```java
 placeOnHold(AvailableBook aBook, HoldDuration holdDuration) {
         Option<Rejection> rejection = patronCanHold(aBook, holdDuration);
@@ -45,6 +46,7 @@ placeOnHold(AvailableBook aBook, HoldDuration holdDuration) {
     }
    
    ```
+Checking if the conditions allowing for reservations are met are carried out in the method Patron.patronCanHold()
 ```java
 private Option<Rejection> patronCanHold(AvailableBook aBook, HoldDuration holdDuration) {
         return placingOnHoldPolicies
@@ -56,6 +58,7 @@ private Option<Rejection> patronCanHold(AvailableBook aBook, HoldDuration holdDu
 
     }
 ```
+The lambda realizing business logic is defined in PlacingOnHoldPolicy interface.
 ```java
  PlacingOnHoldPolicy onlyResearcherPatronsCanHoldRestrictedBooksPolicy =
             (AvailableBook book, Patron patron, HoldDuration holdDuration) -> {
@@ -66,27 +69,43 @@ private Option<Rejection> patronCanHold(AvailableBook aBook, HoldDuration holdDu
             };
 ```
 
-
+This fragment of code realizes main goals
+* creates BookPlacedOnHold event
+* creates BookPlacedOnHoldEvents
+* emites  BookPlacedOnHoldEvents
 ```java
 placeOnHold(AvailableBook aBook, HoldDuration holdDuration) {
-        Option<Rejection> rejection = patronCanHold(aBook, holdDuration);
+        
 
         if (rejection.isEmpty()) {
-            PatronEvent.BookPlacedOnHold bookPlacedOnHold = PatronEvent.BookPlacedOnHold.bookPlacedOnHoldNow
+            PatronEvent.BookPlacedOnHold bookPlacedOnHold = 
+            PatronEvent.BookPlacedOnHold.bookPlacedOnHoldNow
                     (aBook.getBookId(), aBook.type(), aBook.getLibraryBranch(), patron.getPatronId(), holdDuration);
 
       ...
             return announceSuccess(events(bookPlacedOnHold));
-        }
-
-        return EitherResult.announceFailure(BookHoldFailed.now(rejection.get(), aBook.getBookId(), aBook.getLibraryBranch(), patron));
+        }    
     }
    
    ```
 
-
+The BookPlacedOnHoldEvents is created on a base of BookPlacedOnHold event.
 ```java
 public static BookPlacedOnHoldEvents events(BookPlacedOnHold bookPlacedOnHold) {
             return new BookPlacedOnHoldEvents(bookPlacedOnHold.getPatronId(), bookPlacedOnHold, Option.none());
         }
 ```
+
+On success, the right side of Either generic is returned, in case of failure, the left side. 
+'''java 
+public interface EitherResult {
+
+    public static <L, R> Either<L, R> announceFailure(L left) {
+        return left(left);
+    }
+
+    public static <L, R> Either<L, R> announceSuccess(R right) {
+        return right(right);
+    }
+}
+'''
