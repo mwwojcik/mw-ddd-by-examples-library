@@ -1,0 +1,37 @@
+@startuml
+    participant "user:User" as user
+    participant "patron: Patron" as patron
+    participant "holdPolicy:PlacingOnHoldPolicy" as holdPolicy
+    participant "book:AvailableBook" as abook
+    participant "result:EitherResult" as result
+    participant "events:BookPlacedOnHoldEvents" as events
+
+   activate patron
+
+
+    user->patron:placeOnHold(aBook,HoldDuration.openEnded(from))
+
+    activate holdPolicy
+    patron->holdPolicy:apply()
+    activate abook
+    holdPolicy->abook:isRestricted()
+    holdPolicy->patron:isRegular()
+
+    holdPolicy->patron
+
+    alt success
+        patron->events:events(BookPlacedOnHold bookPlaceOnHold, MaximumNumberOfHoldsReached maximumNumberOfHoldsReached)
+        note over events: create  BookPlacedOnHoldEvents event
+        activate events
+        events->patron:return created event
+        activate result
+        patron->result:announceSuccess(BookPlacedOnHoldEvents)
+    else failure
+        patron->events:now(Rejection rejection, BookId bookId, LibraryBranchId libraryBranchId, PatronInformation patronInformation)
+                note over events: create  BookHoldFailed event
+
+                events->patron:return created event
+                patron->result:announceFailure(BookHoldFailed)
+    end group
+    patron->user
+@enduml
