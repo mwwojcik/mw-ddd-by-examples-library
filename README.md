@@ -46,7 +46,7 @@ placeOnHold(AvailableBook aBook, HoldDuration holdDuration) {
     }
    
    ```
-Checking booking conditions delegated to the method Patron.patronCanHold()
+Checking booking conditions is delegated to the method Patron.patronCanHold()
 ```java
 private Option<Rejection> patronCanHold(AvailableBook aBook, HoldDuration holdDuration) {
         return placingOnHoldPolicies
