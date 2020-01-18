@@ -1,7 +1,7 @@
 @startuml
 !includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
 
-title Component diagram for Internet Banking System - API Application
+title Component diagram for Library System
 
 LAYOUT_WITH_LEGEND()
 LAYOUT_TOP_DOWN
@@ -11,14 +11,14 @@ Person(user,"Patron/reseracher")
 Person(librarian,"Librarian")
 
 System_Boundary(c0, "Catalogue context") {
-Component(catalogue,"Library catalogue","REST")
+Component(catalogue,"Library catalogue","CRUD/REST",[Module responsible for book catalogue managing.])
 }
 
 System_Boundary(c1, "Lending context") {
-Component(book,"Book","REST")
-Component(patron_profile,"Patron profile","REST")
-Component(daily_sheet,"Daily sheet","REST")
-Component(patron,"Patron","REST")
+Component(book,"Book","Bussiness Component","Responsible for  main bussiness logic in context of Book.")
+Component(patron_profile,"Patron profile","REST","Component for managing user checkouts and holds.")
+Component(daily_sheet,"Daily sheet","Bussiness Component")
+Component(patron,"Patron","Bussiness Component","Responsible for  main bussiness logic in context of Patron.")
 }
 
 ContainerDb(database, "NoSQL Database", "NoSQL Database", "Stores movies,rentals etc.")
