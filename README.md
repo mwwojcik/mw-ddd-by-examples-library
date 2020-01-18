@@ -59,6 +59,7 @@ private Option<Rejection> patronCanHold(AvailableBook aBook, HoldDuration holdDu
     }
 ```
 The lambda realizing business logic is defined in PlacingOnHoldPolicy interface.
+This interface is a repository of different holding policies.
 ```java
  PlacingOnHoldPolicy onlyResearcherPatronsCanHoldRestrictedBooksPolicy =
             (AvailableBook book, Patron patron, HoldDuration holdDuration) -> {
@@ -69,12 +70,13 @@ The lambda realizing business logic is defined in PlacingOnHoldPolicy interface.
             };
 ```
 
-Main goals of placeOnHold() method
+Main goals of Patron.placeOnHold() method
 * checking business logic
 * creating BookPlacedOnHold event
 * creating BookPlacedOnHoldEvents
-* BookPlacedOnHoldEvents emission
+* BookPlacedOnHoldEvents emission (on success or failure)
 ```java
+public Either<BookHoldFailed, PatronEvent.BookPlacedOnHoldEvents>
 placeOnHold(AvailableBook aBook, HoldDuration holdDuration) {
          Option<Rejection> rejection = patronCanHold(aBook, holdDuration);
 
@@ -86,19 +88,59 @@ placeOnHold(AvailableBook aBook, HoldDuration holdDuration) {
       ...
             return announceSuccess(events(bookPlacedOnHold));
         }    
+...
+return EitherResult.announceFailure(BookHoldFailed.now(rejection.get(), aBook.getBookId(), aBook.getLibraryBranch(), patron));
     }
    
    ```
 
 The BookPlacedOnHoldEvents is created on a base of BookPlacedOnHold event.
+Original BookPlacedOnHold event carries information about book holding. 
+BookPlacedOnHoldEvents is a carrier of wider information f.e. "This was a last possible holding".  
 ```java
-public static BookPlacedOnHoldEvents events(BookPlacedOnHold bookPlacedOnHold) {
+class BookPlacedOnHoldEvents implements PatronEvent {
+        UUID eventId = UUID.randomUUID();
+        UUID patronId;
+        BookPlacedOnHold bookPlacedOnHold;
+        Option<MaximumNumberOfHoldsReached> maximumNumberOfHoldsReached;
+
+        @Override
+        public Instant getWhen() {
+            return bookPlacedOnHold.getWhen();
+        }
+
+        public static BookPlacedOnHoldEvents events(BookPlacedOnHold bookPlacedOnHold) {
             return new BookPlacedOnHoldEvents(bookPlacedOnHold.getPatronId(), bookPlacedOnHold, Option.none());
         }
+}
 ```
+Original BookPlaceOnHoldEvent:
 
-On success, the right side of Either generic is returned, in case of failure, the left side.
- 
+```java
+class BookPlacedOnHold implements PatronEvent {
+        UUID eventId = UUID.randomUUID();
+        Instant when;
+        UUID patronId;
+        UUID bookId;
+        BookType bookType;
+        UUID libraryBranchId;
+        Instant holdFrom;
+        Instant holdTill;
+
+        public static BookPlacedOnHold bookPlacedOnHoldNow(BookId bookId, BookType bookType,
+                                                           LibraryBranchId libraryBranchId,
+                                                           PatronId paronId,
+                                                           HoldDuration holdDuration) {
+                                                            ....
+    }
+}
+```
+Methods implementing business actions inform the environment about their success or failure.
+It is done by using Either object. It should be treated like a Pair. 
+Business method should return only one side of this pair.
+By the conventions on success, the right side is returned, in case of failure, the left side.
+EitherResult interface provides an abstraction on this action.
+
 ```java 
     public interface EitherResult {
 
