@@ -6,9 +6,12 @@ import mw.library.lending.book.model.AvailableBook;
 import mw.library.lending.book.model.BookInformation;
 import mw.library.lending.librarybranch.model.LibraryBranchId;
 
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-class BookFixture {
+public class BookFixture {
     public static AvailableBook circulatingAvailableBook() {
         return circulatingAvailableBookAt(anyBranchId());
     }
@@ -25,4 +28,10 @@ class BookFixture {
         return new BookId(UUID.randomUUID());
     }
 
+    static Set<Hold> booksOnHold(int numberOfHolds) {
+        return IntStream
+                .rangeClosed(1,numberOfHolds)
+                .mapToObj(i->new Hold(anyBookId(),anyBranchId()))
+                .collect(Collectors.toSet());
+    }
 }

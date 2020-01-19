@@ -1,5 +1,8 @@
-package mw.library.lending.patron.model;
+package mw.library.lending.patron.model.hold;
 
+import mw.library.lending.patron.model.HoldDuration;
+import mw.library.lending.patron.model.PatronFixture;
+import mw.library.lending.patron.model.PlacingOnHoldPolicy;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.Fail;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,9 +22,9 @@ class PatronRequestingOpenEndedHoldTest {
         Instant from=Instant.MIN;
         var aBook= circulatingAvailableBook();
         var patronId= PatronFixture.anyPatronId();
-        var researcherPatron= PatronFixture.researcherPatronWithPolicy(patronId,PlacingOnHoldPolicy.onlyResearcherPatronsCanPlaceOpenEndedHolds);
+        var researcherPatron= PatronFixture.researcherPatronWithPolicy(patronId, PlacingOnHoldPolicy.onlyResearcherPatronsCanPlaceOpenEndedHolds);
       // when 
-        var result=researcherPatron.placeOnHold(aBook,HoldDuration.openEnded(from));
+        var result=researcherPatron.placeOnHold(aBook, HoldDuration.openEnded(from));
       // then
         Assertions.assertThat(result.isRight());
     }

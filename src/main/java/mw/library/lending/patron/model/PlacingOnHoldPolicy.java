@@ -9,7 +9,7 @@ import mw.library.lending.book.model.AvailableBook;
 import static io.vavr.control.Either.left;
 import static io.vavr.control.Either.right;
 
-interface PlacingOnHoldPolicy extends Function3<AvailableBook, Patron, HoldDuration, Either<Rejection, Allowance>> {
+public interface PlacingOnHoldPolicy extends Function3<AvailableBook, Patron, HoldDuration, Either<Rejection, Allowance>> {
 
     PlacingOnHoldPolicy onlyResearcherPatronsCanHoldRestrictedBooksPolicy =
             (AvailableBook book, Patron patron, HoldDuration holdDuration) -> {

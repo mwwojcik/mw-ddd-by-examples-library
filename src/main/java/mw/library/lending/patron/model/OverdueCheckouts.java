@@ -1,5 +1,6 @@
 package mw.library.lending.patron.model;
 
+import lombok.Value;
 import mw.library.catalogue.BookId;
 import mw.library.lending.librarybranch.model.LibraryBranchId;
 
@@ -8,6 +9,7 @@ import java.util.Set;
 
 import static java.util.Collections.emptySet;
 
+@Value
 public class OverdueCheckouts {
     static int MAX_COUNT_OF_OVERDUE_RESOURCES = 2;
 

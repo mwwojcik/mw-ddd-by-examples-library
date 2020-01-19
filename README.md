@@ -96,7 +96,9 @@ return EitherResult.announceFailure(BookHoldFailed.now(rejection.get(), aBook.ge
 
 The BookPlacedOnHoldEvents is created on a base of BookPlacedOnHold event.
 Original BookPlacedOnHold event carries information about book holding. 
-BookPlacedOnHoldEvents is a carrier of wider information f.e. "This was a last possible holding".  
+BookPlacedOnHoldEvents is a carrier of wider information f.e. "This was a last possible holding". 
+This intention is expressed via Option<MaximumNumberOfHoldsReached> maximumNumberOfHoldsReached.
+MaximuNumberOfHoldsReached is another event instantioned directly in placeOnHold() method. 
 ```java
 class BookPlacedOnHoldEvents implements PatronEvent {
         UUID eventId = UUID.randomUUID();
@@ -135,6 +137,32 @@ class BookPlacedOnHold implements PatronEvent {
     }
 }
 ```
+Code of MaximumNumberOfHoldsReached event
+```java
+@Value
+class MaximumNumberOfHoldsReached implements PatronEvent {
+    UUID eventId = UUID.randomUUID();
+    Instant when;
+    UUID patronId;
+    int numberOfHolds;
+
+    public static MaximumNumberOfHoldsReached now(PatronInformation patronInformation, int numberOfHolds) {
+        return new MaximumNumberOfHoldsReached(Instant.now(),
+                patronInformation.getPatronId().getPatronId(),
+                numberOfHolds);
+    }
+}
+
+```
+
+Instantioning MaximumNumberOfHoldsReached event from Patron.holdOn() method
+```java
+ if (patronHolds.maximumHoldsAfterHolding(aBook)) {
+                return announceSuccess(events(bookPlacedOnHold, MaximumNumberOfHoldsReached.now(patron, MAX_NUMBER_OF_HOLDS)));
+            }
+```
+
+
 Methods implementing business actions inform the environment about their success or failure.
 It is done by using Either object. It should be treated like a Pair. 
 Business method should return only one side of this pair.

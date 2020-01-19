@@ -1,5 +1,8 @@
-package mw.library.lending.patron.model;
+package mw.library.lending.patron.model.hold;
 
+import mw.library.lending.patron.model.BookFixture;
+import mw.library.lending.patron.model.HoldDuration;
+import mw.library.lending.patron.model.PatronFixture;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.Fail;
 import org.junit.jupiter.api.DisplayName;
