@@ -1,5 +1,7 @@
 package mw.library.lending.patron.model.hold;
 
+import mw.library.lending.patron.model.BookFixture;
+import mw.library.lending.patron.model.PatronFixture;
 import org.assertj.core.api.Fail;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,7 +11,10 @@ class PatronCancelingHoldTest {
     @Test void shouldBeAbleToCancelHold()
      throws Exception {
       // given
+      var bookOnHold= BookFixture.bookOnHold();
+      var regularPatronWithHold= PatronFixture.regularPatronWithHold(bookOnHold);
       // when 
+      //regularPatronWithHold
       // then
 
       Fail.fail("Write your test");

@@ -1,6 +1,7 @@
 package mw.library.lending.patron.model;
 
 import io.vavr.collection.List;
+import mw.library.lending.book.model.BookOnHold;
 
 import java.util.*;
 
@@ -41,4 +42,19 @@ public class PatronFixture {
         );
     }
 
+    public static Patron regularPatronWithHold(BookOnHold bookOnHold) {
+        var patron=regularPatronWith(new Hold(bookOnHold.getBookInformation().getBookId(),bookOnHold.getLibraryBranchId()));
+        return patron;
+    }
+
+    private static Patron regularPatronWith(Hold hold) {
+
+        var patron= new Patron(
+                new PatronInformation(anyPatronId(), Regular),
+                PlacingOnHoldPolicy.allCurrentPolicies(),
+                new OverdueCheckouts(new HashMap<>()),
+                new PatronHolds(Collections.singleton(hold))
+        );
+        return patron;
+    }
 }

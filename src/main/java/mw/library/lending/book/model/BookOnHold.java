@@ -12,7 +12,7 @@ import java.time.Instant;
 @Value
 @AllArgsConstructor
 @EqualsAndHashCode(of="bookInformation")
-class BookOnHold  implements Book {
+public class BookOnHold  implements Book {
     BookInformation bookInformation;
     LibraryBranchId libraryBranchId;
     PatronId byPatron;
