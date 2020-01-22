@@ -2,6 +2,7 @@ package mw.library.lending.patron.model;
 
 import lombok.Value;
 import mw.library.lending.book.model.AvailableBook;
+import mw.library.lending.book.model.BookOnHold;
 
 import java.util.Set;
 
@@ -17,5 +18,11 @@ public class PatronHolds {
 
     boolean maximumHoldsAfterHolding(AvailableBook book) {
         return count() + 1 == MAX_NUMBER_OF_HOLDS;
+    }
+
+    boolean a (BookOnHold book){
+        Hold hold=new Hold(book.getBookInformation().getBookId(),
+                book.getLibraryBranchId());
+        return resourcesOnHold.contains(hold);
     }
 }

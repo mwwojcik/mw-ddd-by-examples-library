@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import mw.library.commons.events.EitherResult;
 import mw.library.lending.book.model.AvailableBook;
+import mw.library.lending.book.model.BookOnHold;
 import mw.library.lending.librarybranch.model.LibraryBranchId;
 
 import static mw.library.commons.events.EitherResult.announceSuccess;
@@ -26,11 +27,11 @@ public class Patron {
 
 //TODO
 
-    public Either<BookHoldFailed, PatronEvent.BookPlacedOnHoldEvents> placeOnHold(AvailableBook book) {
+    public Either<PatronEvent.BookHoldFailed, PatronEvent.BookPlacedOnHoldEvents> placeOnHold(AvailableBook book) {
         return placeOnHold(book, HoldDuration.openEnded());
     }
 
-    public Either<BookHoldFailed, PatronEvent.BookPlacedOnHoldEvents>
+    public Either<PatronEvent.BookHoldFailed, PatronEvent.BookPlacedOnHoldEvents>
     placeOnHold(AvailableBook aBook, HoldDuration holdDuration) {
         Option<Rejection> rejection = patronCanHold(aBook, holdDuration);
 
@@ -44,7 +45,7 @@ public class Patron {
             return announceSuccess(events(bookPlacedOnHold));
         }
 
-        return EitherResult.announceFailure(BookHoldFailed.now(rejection.get(), aBook.getBookId(), aBook.getLibraryBranch(), patron));
+        return EitherResult.announceFailure(PatronEvent.BookHoldFailed.now(rejection.get(), aBook.getBookId(), aBook.getLibraryBranch(), patron));
     }
 
     private Option<Rejection> patronCanHold(AvailableBook aBook, HoldDuration holdDuration) {
@@ -56,6 +57,24 @@ public class Patron {
                 ;
 
     }
+
+
+    public Either<PatronEvent.BookHoldCancelingFailed, PatronEvent.BookHoldCanceled> cancelHold(BookOnHold book) {
+        if(patronHolds.a(book)){
+            announceSuccess(PatronEvent.BookHoldCanceled.holdCancelNow(book.getBookInformation().getBookId(),
+                    patron.getPatronId(),
+                    book.getLibraryBranchId()
+                    ));
+        }
+      return EitherResult.announceFailure(
+              PatronEvent.BookHoldCancelingFailed.holdCancelingFailedNow(
+                      book.getBookInformation().getBookId(),
+                      book.getLibraryBranchId(),
+                      patron.getPatronId()
+              )
+      );
+    }
+
 
     boolean isRegular() {
         return patron.isRegular();
