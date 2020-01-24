@@ -1,7 +1,12 @@
 package mw.library.lending.patron.model.hold;
 
+import io.vavr.control.Either;
+import mw.library.catalogue.Book;
+import mw.library.lending.book.model.BookOnHold;
 import mw.library.lending.patron.model.BookFixture;
+import mw.library.lending.patron.model.PatronEvent;
 import mw.library.lending.patron.model.PatronFixture;
+import org.assertj.core.api.Assertions;
 import org.assertj.core.api.Fail;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,10 +19,11 @@ class PatronCancelingHoldTest {
       var bookOnHold= BookFixture.bookOnHold();
       var regularPatronWithHold= PatronFixture.regularPatronWithHold(bookOnHold);
       // when 
-      //regularPatronWithHold
-      // then
+      var bookHoldCanceleds = regularPatronWithHold.cancelHold(bookOnHold);
 
-      Fail.fail("Write your test");
+      // then
+      Assertions.assertThat(bookHoldCanceleds.isRight());
+
 
       }
 
@@ -25,21 +31,27 @@ class PatronCancelingHoldTest {
       @Test void shouldntBeAbleToCancelNotExistsHold()
        throws Exception {
         // given
+        var bookOnHold = BookFixture.bookOnHold();
+        var patron=PatronFixture.regularPatron();
         // when 
+        var bookHoldCanceleds = patron.cancelHold(bookOnHold);
         // then
 
-        Fail.fail("Write your test");
+        Assertions.assertThat(bookHoldCanceleds.isLeft());
 
         }
 
-        @DisplayName("atron cannot cancel a hold which was done by someone else")
+        @DisplayName("patron cannot cancel a hold which was done by someone else")
         @Test void shouldntCancelSomeonesHold()
          throws Exception {
           // given
+          var bookOnHold = BookFixture.bookOnHold();
+          var patron=PatronFixture.regularPatron();
+          var differentPatron=PatronFixture.regularPatronWithHold(bookOnHold);
           // when 
+          var result = patron.cancelHold(bookOnHold);
           // then
-
-          Fail.fail("Write your test");
+          Assertions.assertThat(result.isLeft());
 
           }
 }

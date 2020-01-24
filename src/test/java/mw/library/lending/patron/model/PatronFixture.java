@@ -57,4 +57,13 @@ public class PatronFixture {
         );
         return patron;
     }
+
+    public static Patron regularPatron() {
+        return new Patron(
+                patronInformation(anyPatronId(), Regular),
+                PlacingOnHoldPolicy.allCurrentPolicies(),
+                new OverdueCheckouts(new HashMap<>()),
+                new PatronHolds(new HashSet<>())
+        );
+    }
 }
