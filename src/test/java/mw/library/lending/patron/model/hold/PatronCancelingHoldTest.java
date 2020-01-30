@@ -32,6 +32,7 @@ class PatronCancelingHoldTest {
        throws Exception {
         // given
         var bookOnHold = BookFixture.bookOnHold();
+
         var patron=PatronFixture.regularPatron();
         // when 
         var bookHoldCanceleds = patron.cancelHold(bookOnHold);
@@ -47,7 +48,7 @@ class PatronCancelingHoldTest {
           // given
           var bookOnHold = BookFixture.bookOnHold();
           var patron=PatronFixture.regularPatron();
-          var differentPatron=PatronFixture.regularPatronWithHold(bookOnHold);
+          var differentPatron= PatronFixture.regularPatronWithHold(bookOnHold);
           // when 
           var result = patron.cancelHold(bookOnHold);
           // then
