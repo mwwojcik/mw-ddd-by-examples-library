@@ -1,8 +1,6 @@
 package mw.library.lending.patron.model.hold;
 
-import mw.library.lending.patron.model.BookFixture;
-import mw.library.lending.patron.model.HoldDuration;
-import mw.library.lending.patron.model.PatronFixture;
+import mw.library.lending.patron.model.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,4 +38,18 @@ class RegularPatronRequestingCirculatingBooksTest {
         Assertions.assertThat(result.get().getMaximumNumberOfHoldsReached()).isNotEmpty();
 
     }
+
+    @DisplayName("a regular patron cannot place on hold books anymore when he has at least two overdue checkouts")
+    @Test void notHoldWhenTwoOverdueCheckout()
+            throws Exception {
+        // given
+        var libraryBranchId = BookFixture.anyBranchId();
+        var patron = PatronFixture.regularPatronWithCheckoutsAt(3,libraryBranchId);
+        var book = BookFixture.circulatingAvailableBookAt(libraryBranchId);
+        // when 
+        var result = patron.placeOnHold(book);
+        // then
+        Assertions.assertThat(result.isLeft()).isEqualTo(true);
+    }
+
 }

@@ -20,7 +20,7 @@ public interface PlacingOnHoldPolicy extends Function3<AvailableBook, Patron, Ho
             };
 
     PlacingOnHoldPolicy overdueCheckoutsRejectionPolicy = (AvailableBook book, Patron patron, HoldDuration holdDuration) -> {
-        if (patron.overdueCheckoutsAt(book.getLibraryBranchId()) >= PatronHolds.MAX_NUMBER_OF_HOLDS) {
+        if (patron.overdueCheckoutsAt(book.getLibraryBranchId()) >= OverdueCheckouts.MAX_COUNT_OF_OVERDUE_RESOURCES) {
             return left(Rejection.withReason("cannot place on hold when there are overdue checkouts"));
         }
         return right(new Allowance());

@@ -8,6 +8,8 @@ import mw.library.lending.book.model.BookOnHold;
 import mw.library.lending.librarybranch.model.LibraryBranchId;
 
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -20,7 +22,7 @@ public class BookFixture {
         return circulatingAvailableBookAt(anyBranchId());
     }
 
-    private static LibraryBranchId anyBranchId() {
+    public static LibraryBranchId anyBranchId() {
         return new LibraryBranchId(UUID.randomUUID());
     }
 
@@ -34,16 +36,26 @@ public class BookFixture {
 
     static Set<Hold> booksOnHold(int numberOfHolds) {
         return IntStream
-                .rangeClosed(1,numberOfHolds)
-                .mapToObj(i->new Hold(anyBookId(),anyBranchId()))
+                .rangeClosed(1, numberOfHolds)
+                .mapToObj(i -> new Hold(anyBookId(), anyBranchId()))
                 .collect(Collectors.toSet());
     }
 
+    static Map<LibraryBranchId, Set<BookId>> overdueCheckoutsAtBranch(int numberOfCheckouts, LibraryBranchId branchId) {
+        var bookIdSet = IntStream
+                .rangeClosed(1, numberOfCheckouts)
+                .mapToObj(i -> anyBookId())
+                .collect(Collectors.toSet());
+        var checkouts = new HashMap<LibraryBranchId, Set<BookId>>();
+        checkouts.put(branchId, bookIdSet);
+        return checkouts;
+    }
+
     public static BookOnHold bookOnHold() {
-        return new BookOnHold(anyBookInformation(),anyBranchId(),anyPatronId(), Instant.now());
+        return new BookOnHold(anyBookInformation(), anyBranchId(), anyPatronId(), Instant.now());
     }
 
     private static BookInformation anyBookInformation() {
-        return new BookInformation(anyBookId(),BookType.Typical);
+        return new BookInformation(anyBookId(), BookType.Typical);
     }
 }
