@@ -60,9 +60,9 @@ public class Patron {
         );
     }
 
-    public Either<PatronEvent.BookCheckingOutFailed, PatronEvent.BookCheckedOut> checkOut(BookOnHold book, CheckoutDuration duration) {
+    public Either<PatronEvent.BookCheckingOutFailed, PatronEvent.BookCheckedOut> checkOut(BookOnHold book, CheckOutDuration duration) {
         if (patronHolds.a(book)) {
-         announceSuccess(PatronEvent.BookCheckedOut.now(patron.getPatronId(),book.getBookInformation().getBookId(),book.getLibraryBranchId()));
+         return announceSuccess(PatronEvent.BookCheckedOut.now(patron.getPatronId(),book.getBookInformation().getBookId(),book.getLibraryBranchId()));
         }
         return announceFailure(PatronEvent.BookCheckingOutFailed.now(patron.getPatronId(),book.getBookInformation().getBookId(),book.getLibraryBranchId()
                 ,Rejection.withReason("book is not on hold by patron")));
