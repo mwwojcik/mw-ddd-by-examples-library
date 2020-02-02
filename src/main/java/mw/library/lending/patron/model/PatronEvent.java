@@ -90,6 +90,7 @@ public interface PatronEvent extends DomainEvent {
             return List.<DomainEvent>of(bookPlacedOnHold).appendAll(maximumNumberOfHoldsReached.toList());
         }
     }
+
     @Value
     class BookHoldFailed implements PatronEvent {
         UUID eventId = UUID.randomUUID();
@@ -100,33 +101,30 @@ public interface PatronEvent extends DomainEvent {
         UUID libraryBranchId;
 
         static BookHoldFailed now(Rejection rejection, BookId bookId, LibraryBranchId libraryBranchId, PatronInformation patronInformation) {
-            return new BookHoldFailed(rejection.getReason().getReason(),Instant.now(),
-                    patronInformation.getPatronId().getPatronId(),bookId.getBookId(),
+            return new BookHoldFailed(rejection.getReason().getReason(), Instant.now(),
+                    patronInformation.getPatronId().getPatronId(), bookId.getBookId(),
                     libraryBranchId.getLibraryBranchId());
         }
-
-
 
 
     }
 
 
-
-
     @Value
-    class BookHoldCancelingFailed implements PatronEvent{
-        UUID eventId=UUID.randomUUID();
+    class BookHoldCancelingFailed implements PatronEvent {
+        UUID eventId = UUID.randomUUID();
         Instant when;
         UUID patronId;
         UUID bookId;
 
         UUID libraryBranchId;
+
         static BookHoldCancelingFailed holdCancelingFailedNow(
                 BookId bookId,
                 LibraryBranchId libraryBranchId,
                 PatronId patronId
 
-        ){
+        ) {
             return new BookHoldCancelingFailed(
                     Instant.now(),
                     patronId.getPatronId(),
@@ -140,20 +138,47 @@ public interface PatronEvent extends DomainEvent {
 
 
     @Value
-    class BookHoldCanceled implements PatronEvent{
-        UUID eventId=UUID.randomUUID();
+    class BookHoldCanceled implements PatronEvent {
+        UUID eventId = UUID.randomUUID();
         Instant when;
         UUID patronId;
         UUID bookId;
         UUID libraryBranchId;
 
-        public static BookHoldCanceled holdCancelNow(BookId bookId, PatronId patronId, LibraryBranchId libraryBranchId){
+        public static BookHoldCanceled holdCancelNow(BookId bookId, PatronId patronId, LibraryBranchId libraryBranchId) {
             return new BookHoldCanceled(
                     Instant.now(),
                     patronId.getPatronId(),
                     bookId.getBookId(),
                     libraryBranchId.getLibraryBranchId()
             );
+        }
+    }
+
+    @Value
+    class BookCheckedOut implements PatronEvent {
+        UUID eventId = UUID.randomUUID();
+        UUID patronId;
+        UUID bookId;
+        UUID libraryBranchId;
+        Instant when;
+
+        public static BookCheckedOut now(PatronId patronId, BookId bookId, LibraryBranchId libraryBranchId) {
+            return new BookCheckedOut(patronId.getPatronId(), bookId.getBookId(), libraryBranchId.getLibraryBranchId(), Instant.now());
+        }
+    }
+
+    @Value
+    class BookCheckingOutFailed implements PatronEvent {
+        UUID eventId = UUID.randomUUID();
+        UUID patronId;
+        UUID bookId;
+        UUID libraryBranchId;
+        Instant when;
+        String reason;
+
+        public static BookCheckingOutFailed now(PatronId patronId, BookId bookId, LibraryBranchId libraryBranchId, Rejection rejection) {
+            return new BookCheckingOutFailed(patronId.getPatronId(), bookId.getBookId(), libraryBranchId.getLibraryBranchId(), Instant.now(), rejection.getReason().getReason());
         }
     }
 
@@ -167,6 +192,7 @@ class MaximumNumberOfHoldsReached implements PatronEvent {
     UUID patronId;
 
     int numberOfHolds;
+
     public static MaximumNumberOfHoldsReached now(PatronInformation patronInformation, int numberOfHolds) {
         return new MaximumNumberOfHoldsReached(Instant.now(),
                 patronInformation.getPatronId().getPatronId(),
