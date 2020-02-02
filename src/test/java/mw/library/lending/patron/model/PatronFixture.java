@@ -46,6 +46,15 @@ public class PatronFixture {
         );
     }
 
+    public static Patron researcherPatronWithHolds(int numberOfHolds) {
+        return new Patron(
+                patronInformation(anyPatronId(), Researcher),
+                List.of(PlacingOnHoldPolicy.regularPatronMaximumNumberOfHoldsPolicy),
+                new OverdueCheckouts(Collections.emptyMap()),
+                new PatronHolds(BookFixture.booksOnHold(numberOfHolds))
+        );
+    }
+
     public static Patron regularPatronWithCheckoutsAt(int numberOfCheckouts, LibraryBranchId libraryBranchId) {
         return new Patron(
                 patronInformation(anyPatronId(), Regular),
