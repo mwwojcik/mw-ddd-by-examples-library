@@ -100,7 +100,9 @@ public interface PatronEvent extends DomainEvent {
         UUID libraryBranchId;
 
         static BookHoldFailed now(Rejection rejection, BookId bookId, LibraryBranchId libraryBranchId, PatronInformation patronInformation) {
-            return null;
+            return new BookHoldFailed(rejection.getReason().getReason(),Instant.now(),
+                    patronInformation.getPatronId().getPatronId(),bookId.getBookId(),
+                    libraryBranchId.getLibraryBranchId());
         }
 
 

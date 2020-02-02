@@ -42,6 +42,7 @@ public interface PlacingOnHoldPolicy extends Function3<AvailableBook, Patron, Ho
                 return right(new Allowance());
             };
 
+
     static List<PlacingOnHoldPolicy> allCurrentPolicies(){
         return List.of(
                 onlyResearcherPatronsCanHoldRestrictedBooksPolicy,

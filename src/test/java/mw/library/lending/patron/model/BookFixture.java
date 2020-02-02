@@ -58,4 +58,12 @@ public class BookFixture {
     private static BookInformation anyBookInformation() {
         return new BookInformation(anyBookId(), BookType.Typical);
     }
+
+    public static AvailableBook restrictedAvailableBook() {
+        return restrictedAvailableBookAt(anyBranchId());
+    }
+
+    public static AvailableBook restrictedAvailableBookAt(LibraryBranchId libraryBranchId) {
+        return new AvailableBook(new BookInformation(anyBookId(),BookType.Restricted),libraryBranchId);
+    }
 }
