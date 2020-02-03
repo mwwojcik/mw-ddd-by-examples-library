@@ -1,4 +1,5 @@
 package mw.library.lending.infrastructure;
 
-class LendingConfig {
+public class LendingConfiguration {
+   
 }
