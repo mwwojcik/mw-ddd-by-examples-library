@@ -1,0 +1,30 @@
+@startuml
+
+skinparam rectangle {
+    FontColor          black
+    AttributeFontColor black
+    FontSize           17
+    AttributeFontSize  15
+    BackgroundColor    #85BBF0
+    BorderColor        #78A8D8
+    ArrowColor         #222266
+
+}
+
+skinparam interface {
+BackgroundColor    #6A9EFF
+BorderColor        black
+}
+
+
+ skinparam linestyle ortho
+ rectangle "Person" as one
+ rectangle "B" as two
+ rectangle "C" as three
+ rectangle "D" as four
+
+ one -right-> two: message 1-->2
+ two -right-> three: message 2-->3
+ two --> four: message 2-->4
+ three -[hidden]- four
+ @enduml

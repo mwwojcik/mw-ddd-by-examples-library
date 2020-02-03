@@ -1,0 +1,35 @@
+@startuml
+
+skinparam component {
+    FontColor          black
+    AttributeFontColor black
+    FontSize           17
+    AttributeFontSize  15
+    BackgroundColor    #85BBF0
+    BorderColor        #78A8D8
+    ArrowColor         #222266
+
+}
+
+skinparam interface {
+BackgroundColor    #6A9EFF
+BorderColor        black
+}
+
+
+
+title "OSCIED Charms Relations (Simple)"
+skinparam componentStyle uml2
+
+rectangle {
+
+    interface BookHoldExpired
+    interface BOOKHTEST
+    [Patron]
+
+    [Patron]...>BookHoldExpired:PUBLISH
+    BOOKHTEST.>[Patron]:Listen
+
+}
+
+@enduml
