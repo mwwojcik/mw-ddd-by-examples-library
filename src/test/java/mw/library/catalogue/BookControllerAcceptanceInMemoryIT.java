@@ -1,7 +1,7 @@
 package mw.library.catalogue;
 
 
-import mw.library.catalogue.inmemory.CatalogueConfigurationInMemory;
+import mw.library.catalogue.infrastructure.CatalogueFacadeBean;
 import mw.library.catalogue.inmemory.LibraryManagementInMemoryTestApp;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,10 +16,10 @@ import org.springframework.context.annotation.ComponentScan;
 class BookControllerAcceptanceInMemoryIT extends BookControllerAcceptanceTest {
 
     @Autowired
-    CatalogueFacade facade ;
+    CatalogueFacadeBean facade ;
 
     @Override
-    protected CatalogueFacade getFacade() {
+    protected CatalogueFacadeBean getFacade() {
         return facade;
     }
 

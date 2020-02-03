@@ -1,44 +1,22 @@
 package mw.library.catalogue;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-
 import java.util.List;
 import java.util.Optional;
 
-@AllArgsConstructor(access = AccessLevel.PUBLIC)
-public class CatalogueFacade {
+public interface CatalogueFacade {
+    List<Book> findAllBooks();
 
-    private CatalogueRepository repository;
+    Book saveNew(Book book);
 
-    public List<Book> findAllBooks() {
-        return repository.findAllBooks();
-    }
-    public Book saveNew(Book book) {
-        return repository.saveNew(book);
-    }
-    public Optional<Book> findBy(ISBN isbn) {
-        return repository.findBy(isbn);
-    }
+    Optional<Book> findBy(ISBN isbn);
 
-    public List<BookInstance>findInstancesByBookISBN(ISBN isbn){
-        return repository.findBookInstancesBy(isbn);
-    }
+    List<BookInstance>findInstancesByBookISBN(ISBN isbn);
 
-    public BookInstance saveNew(BookInstance bookInstance) {
-        return repository.saveNew(bookInstance);
-    }
+    BookInstance saveNew(BookInstance bookInstance);
 
-    public void deleteBy(ISBN isbn) {
-        repository.deleteBookBy(isbn);
-    }
+    void deleteBy(ISBN isbn);
 
-    public Optional<BookInstance> findInstanceBy(BookId isbn) {
-        return repository.findBookInstanceBy(isbn);
-    }
+    Optional<BookInstance> findInstanceBy(BookId isbn);
 
-    public void deleteInstanceBy(BookId isbn) {
-        repository.deleteBookInstanceBy(isbn);
-    }
-
+    void deleteInstanceBy(BookId isbn);
 }

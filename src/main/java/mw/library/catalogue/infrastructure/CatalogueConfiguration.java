@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 public class CatalogueConfiguration {
     @Bean
     CatalogueFacade catalogueFacade(CatalogueRepository repository) {
-        return new CatalogueFacade(repository);
+        return new CatalogueFacadeBean(repository);
     }
 
     @Bean

@@ -1,13 +1,13 @@
 package mw.library.catalogue.inmemory;
 
-import mw.library.catalogue.CatalogueFacade;
+import mw.library.catalogue.infrastructure.CatalogueFacadeBean;
 import org.springframework.context.annotation.Bean;
 
 
 public class CatalogueConfigurationInMemory {
 
     @Bean
-    public static CatalogueFacade catalogueFacade() {
-        return new CatalogueFacade(new InMemoryCatalogueDatabase());
+    public static CatalogueFacadeBean catalogueFacade() {
+        return new CatalogueFacadeBean(new InMemoryCatalogueDatabase());
     }
 }

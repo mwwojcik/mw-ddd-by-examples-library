@@ -1,4 +1,4 @@
-package mw.library.catalogue.infrastructure;
+package mw.library;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.SimpleMongoClientDbFactory;
 @EnableAutoConfiguration(exclude = {MongoAutoConfiguration.class,
         MongoRepositoriesAutoConfiguration.class
         , MongoDataAutoConfiguration.class})
-public class CatalogueDBConfiguration {
+public class LibraryDBConfiguration {
     public @Bean
         //MongoAutoConfiguration
     MongoClient mongoClient() {

@@ -1,11 +1,11 @@
 package mw.library.catalogue;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import mw.library.catalogue.infrastructure.CatalogueFacadeBean;
 import org.hamcrest.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -18,7 +18,7 @@ abstract class BookControllerAcceptanceTest {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    protected abstract CatalogueFacade getFacade();
+    protected abstract CatalogueFacadeBean getFacade();
 
     void acceptance()
             throws Exception {

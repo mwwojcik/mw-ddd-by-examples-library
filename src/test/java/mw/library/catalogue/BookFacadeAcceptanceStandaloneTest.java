@@ -1,7 +1,7 @@
 package mw.library.catalogue;
 
 
-import mw.library.catalogue.inmemory.CatalogueConfigurationInMemory;
+import mw.library.catalogue.infrastructure.CatalogueFacadeBean;
 import mw.library.catalogue.standalone.LibraryManagementStandaloneApp;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,10 +18,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BookFacadeAcceptanceStandaloneTest extends BookFacadeAcceptanceTest {
 
     @Autowired
-    CatalogueFacade facade;// = CatalogueConfigurationInMemory.catalogueFacade();
+    CatalogueFacadeBean facade;// = CatalogueConfigurationInMemory.catalogueFacade();
 
     @Override
-    protected CatalogueFacade getFacade() {
+    protected CatalogueFacadeBean getFacade() {
         return facade;
     }
 

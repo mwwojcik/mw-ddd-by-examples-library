@@ -1,5 +1,6 @@
 package mw.library.catalogue;
 
+import mw.library.catalogue.infrastructure.CatalogueFacadeBean;
 import mw.library.catalogue.standalone.LibraryManagementStandaloneApp;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,10 +16,10 @@ import org.springframework.context.annotation.ComponentScan;
 class BookControllerAcceptanceStandaloneIT extends BookControllerAcceptanceTest {
 
     @Autowired
-    private CatalogueFacade facade;
+    private CatalogueFacadeBean facade;
 
     @Override
-    protected CatalogueFacade getFacade() {
+    protected CatalogueFacadeBean getFacade() {
         return facade;
     }
 

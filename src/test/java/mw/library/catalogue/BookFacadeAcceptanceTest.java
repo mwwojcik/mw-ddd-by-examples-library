@@ -1,15 +1,13 @@
 package mw.library.catalogue;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import mw.library.catalogue.infrastructure.CatalogueFacadeBean;
 import org.assertj.core.api.Assertions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 abstract class  BookFacadeAcceptanceTest {
 
-    protected abstract CatalogueFacade getFacade();
+    protected abstract CatalogueFacadeBean getFacade();
     
     protected void acceptance() {
         // given inventory with two books added
