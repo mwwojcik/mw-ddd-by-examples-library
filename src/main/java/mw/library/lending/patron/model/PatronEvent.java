@@ -226,11 +226,11 @@ public interface PatronEvent extends DomainEvent {
         UUID bookId;
         UUID libraryBranchId;
 
-        public static BookHoldExpired now(PatronInformation patronInformation, BookInformation bookInformation, LibraryBranchId libraryBranchId) {
+        public static BookHoldExpired now(PatronId patronId, BookId bookId, LibraryBranchId libraryBranchId) {
             return new BookHoldExpired(
                     Instant.now(),
-                    patronInformation.getPatronId().getPatronId(),
-                    bookInformation.getBookId().getBookId(),
+                    patronId.getPatronId(),
+                    bookId.getBookId(),
                     libraryBranchId.getLibraryBranchId()
             );
         }
@@ -244,10 +244,10 @@ public interface PatronEvent extends DomainEvent {
         UUID bookId;
         UUID libraryBranchId;
 
-        public static OverdueCheckoutRegistered now(PatronInformation patronInformation, BookInformation bookInformation, LibraryBranchId libraryBranchId) {
+        public static OverdueCheckoutRegistered now(PatronId patronId, BookId bookId, LibraryBranchId libraryBranchId) {
             return new OverdueCheckoutRegistered(Instant.now(),
-                    patronInformation.getPatronId().getPatronId(),
-                    bookInformation.getBookId().getBookId(),
+                    patronId.getPatronId(),
+                    bookId.getBookId(),
                     libraryBranchId.getLibraryBranchId());
         }
     }
