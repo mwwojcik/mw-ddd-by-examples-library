@@ -37,7 +37,7 @@ public class Patron {
             PatronEvent.BookPlacedOnHold bookPlacedOnHold = PatronEvent.BookPlacedOnHold.bookPlacedOnHoldNow
                     (aBook.getBookId(), aBook.type(), aBook.getLibraryBranch(), patron.getPatronId(), holdDuration);
             if (patronHolds.maximumHoldsAfterHolding(aBook)) {
-                return announceSuccess(events(bookPlacedOnHold, MaximumNumberOfHoldsReached.now(patron, MAX_NUMBER_OF_HOLDS)));
+                return announceSuccess(events(bookPlacedOnHold, PatronEvent.MaximumNumberOfHoldsReached.now(patron, MAX_NUMBER_OF_HOLDS)));
             }
             return announceSuccess(events(bookPlacedOnHold));
         }

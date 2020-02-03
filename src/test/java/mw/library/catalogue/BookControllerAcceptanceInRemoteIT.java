@@ -9,9 +9,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 
-@SpringBootTest(classes = LibraryManagementRemoteTestApp.class)
+/*@SpringBootTest(classes = LibraryManagementRemoteTestApp.class)
 @AutoConfigureMockMvc
-@ComponentScan({"mw.library.catalogue.infrastructure"})
+@ComponentScan({"mw.library.catalogue.infrastructure"})*/
 class BookControllerAcceptanceInRemoteIT extends BookControllerAcceptanceTest {
     @Autowired
     private CatalogueFacade facade;
@@ -22,7 +22,7 @@ class BookControllerAcceptanceInRemoteIT extends BookControllerAcceptanceTest {
     }
 
     @DisplayName("Positive test acceptance - add book to catalogue - remote database instance")
-    @Test
+    //@Test
     void acceptanceTestInRemoteDB() throws Exception {
         acceptance();
     }

@@ -6,12 +6,14 @@ import lombok.Value;
 import mw.library.catalogue.BookId;
 import mw.library.catalogue.BookType;
 import mw.library.commons.events.DomainEvent;
+import mw.library.lending.book.model.BookInformation;
 import mw.library.lending.librarybranch.model.LibraryBranchId;
 
 import java.time.Instant;
 import java.util.UUID;
 
 public interface PatronEvent extends DomainEvent {
+
     default PatronId patronId() {
         return new PatronId(getPatronId());
     }
@@ -131,11 +133,8 @@ public interface PatronEvent extends DomainEvent {
                     bookId.getBookId(),
                     libraryBranchId.getLibraryBranchId()
             );
-
         }
-
     }
-
 
     @Value
     class BookHoldCanceled implements PatronEvent {
@@ -153,6 +152,23 @@ public interface PatronEvent extends DomainEvent {
                     libraryBranchId.getLibraryBranchId()
             );
         }
+    }
+
+    @Value
+    class MaximumNumberOfHoldsReached implements PatronEvent {
+
+        UUID eventId = UUID.randomUUID();
+        Instant when;
+        UUID patronId;
+        int numberOfHolds;
+
+        public static MaximumNumberOfHoldsReached now(PatronInformation patronInformation, int numberOfHolds) {
+            return new MaximumNumberOfHoldsReached(Instant.now(),
+                    patronInformation.getPatronId().getPatronId(),
+                    numberOfHolds);
+        }
+
+
     }
 
     @Value
@@ -182,21 +198,59 @@ public interface PatronEvent extends DomainEvent {
         }
     }
 
-}
+    @Value
+    class BookReturned implements PatronEvent {
+        UUID eventId = UUID.randomUUID();
+        Instant when;
+        UUID patronId;
+        UUID bookId;
+        BookType bookType;
+        UUID libraryBranchId;
 
-
-@Value
-class MaximumNumberOfHoldsReached implements PatronEvent {
-    UUID eventId = UUID.randomUUID();
-    Instant when;
-    UUID patronId;
-
-    int numberOfHolds;
-
-    public static MaximumNumberOfHoldsReached now(PatronInformation patronInformation, int numberOfHolds) {
-        return new MaximumNumberOfHoldsReached(Instant.now(),
-                patronInformation.getPatronId().getPatronId(),
-                numberOfHolds);
+        public static BookReturned now(PatronInformation patronInformation, BookInformation bookInformation, LibraryBranchId libraryBranchId) {
+            return new BookReturned(
+                    Instant.now(),
+                    patronInformation.getPatronId().getPatronId(),
+                    bookInformation.getBookId().getBookId(),
+                    bookInformation.getBookType(),
+                    libraryBranchId.getLibraryBranchId()
+            );
+        }
     }
 
+    @Value
+    class BookHoldExpired implements PatronEvent {
+        UUID eventId = UUID.randomUUID();
+        Instant when;
+        UUID patronId;
+        UUID bookId;
+        UUID libraryBranchId;
+
+        public static BookHoldExpired now(PatronInformation patronInformation, BookInformation bookInformation, LibraryBranchId libraryBranchId) {
+            return new BookHoldExpired(
+                    Instant.now(),
+                    patronInformation.getPatronId().getPatronId(),
+                    bookInformation.getBookId().getBookId(),
+                    libraryBranchId.getLibraryBranchId()
+            );
+        }
+    }
+
+    @Value
+    class OverdueCheckoutRegistered implements PatronEvent {
+        UUID eventId = UUID.randomUUID();
+        Instant when;
+        UUID patronId;
+        UUID bookId;
+        UUID libraryBranchId;
+
+        public static OverdueCheckoutRegistered now(PatronInformation patronInformation, BookInformation bookInformation, LibraryBranchId libraryBranchId) {
+            return new OverdueCheckoutRegistered(Instant.now(),
+                    patronInformation.getPatronId().getPatronId(),
+                    bookInformation.getBookId().getBookId(),
+                    libraryBranchId.getLibraryBranchId());
+        }
+    }
 }
+
+
