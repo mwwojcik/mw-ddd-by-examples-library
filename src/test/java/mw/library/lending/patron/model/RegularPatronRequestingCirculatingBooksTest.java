@@ -1,4 +1,4 @@
-package mw.library.lending.patron.model.hold;
+package mw.library.lending.patron.model;
 
 import mw.library.lending.patron.model.*;
 import org.assertj.core.api.Assertions;

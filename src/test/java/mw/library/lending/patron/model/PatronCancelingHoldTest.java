@@ -1,4 +1,4 @@
-package mw.library.lending.patron.model.hold;
+package mw.library.lending.patron.model;
 
 import io.vavr.control.Either;
 import mw.library.catalogue.Book;

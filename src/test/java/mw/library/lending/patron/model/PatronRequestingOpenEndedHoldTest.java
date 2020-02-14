@@ -1,4 +1,4 @@
-package mw.library.lending.patron.model.hold;
+package mw.library.lending.patron.model;
 
 import mw.library.lending.patron.model.HoldDuration;
 import mw.library.lending.patron.model.PatronFixture;
