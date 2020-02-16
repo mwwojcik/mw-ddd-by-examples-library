@@ -1,9 +1,7 @@
 package mw.library.lending.patron.model;
 
-import io.vavr.control.Either;
-import mw.library.lending.patron.model.*;
+import mw.library.lending.book.model.BookFixture;
 import org.assertj.core.api.Assertions;
-import org.assertj.core.api.Fail;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -1,6 +1,7 @@
 package mw.library.lending.patron.model;
 
 import io.vavr.collection.List;
+import mw.library.lending.book.model.BookFixture;
 import mw.library.lending.book.model.BookOnHold;
 import mw.library.lending.librarybranch.model.LibraryBranchId;
 

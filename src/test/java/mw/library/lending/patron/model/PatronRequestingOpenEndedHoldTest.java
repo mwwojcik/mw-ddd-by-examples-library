@@ -1,17 +1,14 @@
 package mw.library.lending.patron.model;
 
-import mw.library.lending.patron.model.HoldDuration;
-import mw.library.lending.patron.model.PatronFixture;
-import mw.library.lending.patron.model.PlacingOnHoldPolicy;
 import org.assertj.core.api.Assertions;
-import org.assertj.core.api.Fail;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 
-import static mw.library.lending.patron.model.BookFixture.*;
+import static mw.library.lending.book.model.BookFixture.*;
 
 class PatronRequestingOpenEndedHoldTest {
 

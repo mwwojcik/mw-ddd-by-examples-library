@@ -1,8 +1,6 @@
 package mw.library.lending.patron.model;
 
-import mw.library.lending.patron.model.BookFixture;
-import mw.library.lending.patron.model.CheckOutDuration;
-import mw.library.lending.patron.model.PatronFixture;
+import mw.library.lending.book.model.BookFixture;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
