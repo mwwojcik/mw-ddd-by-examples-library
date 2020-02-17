@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import java.time.Instant;
 
 class BookPlacingOnHoldTest {
-    //    def 'should place on hold book which is marked as available in the system'() {
     @DisplayName("should place on hold book which is marked as available in the system")
     @Test
     void shouldPlaceOnHoldAvailableBook()
@@ -28,6 +27,8 @@ class BookPlacingOnHoldTest {
         // then
 
         Assertions.assertThat(result.getBookInformation().getBookId()).isEqualTo(availableBook.getBookId());
+        Assertions.assertThat(result.getByPatron().getPatronId()).isEqualTo(patron.getPatronId());
+
 
 
     }
