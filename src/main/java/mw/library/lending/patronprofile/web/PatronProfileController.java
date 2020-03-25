@@ -7,12 +7,12 @@ import mw.library.catalogue.BookId;
 import mw.library.lending.librarybranch.model.LibraryBranchId;
 import mw.library.lending.patron.application.hold.PlaceOnHoldCommand;
 import mw.library.lending.patron.application.hold.PlacingOnHold;
-import mw.library.lending.patron.model.Hold;
 import mw.library.lending.patron.model.PatronId;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -21,6 +21,7 @@ class PatronProfileController {
 
   private PlacingOnHold placingOnHold;
 
+  /** ******* HOLDS ************* */
   @GetMapping("/profiles/{patronId}/holds/{bookId}")
   private ResponseEntity<Hold> findHold(
       @PathVariable(name = "patronId") UUID patronId, @PathVariable(name = "bookId") UUID bookId) {
@@ -55,6 +56,28 @@ class PatronProfileController {
 
     return null;
   }
+
+  /** ********** CHECKOUTS ***************** */
+  public ResponseEntity<Collection<CheckOut>> findCheckouts(
+      @PathVariable(name = "patronId") UUID patronId) {
+    return null;
+  }
+
+  public ResponseEntity<CheckOut> findCheckout(
+      @PathVariable(name = "bookId") UUID bookId, @PathVariable(name = "patronId") UUID patronId) {
+    return null;
+  }
+}
+
+@Value
+class Hold {
+  UUID bookId;
+  Instant till;
+}
+
+class CheckOut {
+  UUID bookId;
+  Instant till;
 }
 
 @Value
