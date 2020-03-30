@@ -6,6 +6,8 @@ import io.vavr.control.Either;
 import lombok.Value;
 import mw.library.lending.book.model.AvailableBook;
 
+import java.util.List;
+
 import static io.vavr.control.Either.left;
 import static io.vavr.control.Either.right;
 

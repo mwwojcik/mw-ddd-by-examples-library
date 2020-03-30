@@ -10,6 +10,8 @@ import mw.library.lending.book.model.AvailableBook;
 import mw.library.lending.book.model.BookOnHold;
 import mw.library.lending.librarybranch.model.LibraryBranchId;
 
+import java.util.List;
+
 import static mw.library.commons.events.EitherResult.announceFailure;
 import static mw.library.commons.events.EitherResult.announceSuccess;
 import static mw.library.lending.patron.model.PatronEvent.BookPlacedOnHoldEvents.events;

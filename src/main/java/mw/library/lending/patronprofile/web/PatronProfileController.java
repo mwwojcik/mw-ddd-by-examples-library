@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -53,7 +54,7 @@ class PatronProfileController {
                 new PatronId(patronId),
                 new LibraryBranchId(placeHoldRequest.getLibraryBranchId()),
                 new BookId(placeHoldRequest.getBookId()),
-                Option.of(placeHoldRequest.getNumberOfDays())));
+                Optional.of(placeHoldRequest.getNumberOfDays())));
 
     return results
         .map(success -> ResponseEntity.ok().build())

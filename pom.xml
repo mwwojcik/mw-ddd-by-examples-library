@@ -67,11 +67,11 @@
 			<scope>provided</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/io.vavr/vavr -->
-		<dependency>
+		<!--<dependency>
 			<groupId>io.vavr</groupId>
 			<artifactId>vavr</artifactId>
 			<version>0.10.2</version>
-		</dependency>
+		</dependency>-->
 	</dependencies>
 
 	<build>

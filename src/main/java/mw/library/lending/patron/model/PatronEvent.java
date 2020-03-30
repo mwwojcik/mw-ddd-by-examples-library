@@ -1,7 +1,6 @@
 package mw.library.lending.patron.model;
 
-import io.vavr.collection.List;
-import io.vavr.control.Option;
+
 import lombok.Value;
 import mw.library.catalogue.BookId;
 import mw.library.catalogue.BookType;
@@ -10,6 +9,8 @@ import mw.library.lending.book.model.BookInformation;
 import mw.library.lending.librarybranch.model.LibraryBranchId;
 
 import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface PatronEvent extends DomainEvent {
@@ -62,7 +63,7 @@ public interface PatronEvent extends DomainEvent {
                     bookType,
                     libraryBranchId.getLibraryBranchId(),
                     holdDuration.getFrom(),
-                    holdDuration.getTo().getOrNull()
+                    holdDuration.getTo().get()
             );
         }
 
@@ -73,7 +74,7 @@ public interface PatronEvent extends DomainEvent {
         UUID eventId = UUID.randomUUID();
         UUID patronId;
         BookPlacedOnHold bookPlacedOnHold;
-        Option<MaximumNumberOfHoldsReached> maximumNumberOfHoldsReached;
+        Optional<MaximumNumberOfHoldsReached> maximumNumberOfHoldsReached;
 
         @Override
         public Instant getWhen() {
@@ -81,15 +82,17 @@ public interface PatronEvent extends DomainEvent {
         }
 
         public static BookPlacedOnHoldEvents events(BookPlacedOnHold bookPlacedOnHold) {
-            return new BookPlacedOnHoldEvents(bookPlacedOnHold.getPatronId(), bookPlacedOnHold, Option.none());
+            return new BookPlacedOnHoldEvents(bookPlacedOnHold.getPatronId(), bookPlacedOnHold, Optional.empty());
         }
 
         public static BookPlacedOnHoldEvents events(BookPlacedOnHold bookPlaceOnHold, MaximumNumberOfHoldsReached maximumNumberOfHoldsReached) {
-            return new BookPlacedOnHoldEvents(bookPlaceOnHold.getPatronId(), bookPlaceOnHold, Option.of(maximumNumberOfHoldsReached));
+            return new BookPlacedOnHoldEvents(bookPlaceOnHold.getPatronId(), bookPlaceOnHold, Optional.of(maximumNumberOfHoldsReached));
         }
 
         public List<DomainEvent> normalize() {
-            return List.<DomainEvent>of(bookPlacedOnHold).appendAll(maximumNumberOfHoldsReached.toList());
+            var events = List.<DomainEvent>of(bookPlacedOnHold);
+            events.add(maximumNumberOfHoldsReached.get());
+            return events;
         }
     }
 
